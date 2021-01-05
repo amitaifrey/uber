@@ -1,0 +1,86 @@
+// REST:
+// Publish a ride: 
+POST /ride/new
+{
+	"First Name": "",
+	"Last Name": "",
+	"Phone Number": "",
+	"Starting Position": "",
+	"Ending Position": "",
+	"Departure Date": "",
+	"Vacancies": -1,
+	"Permitted Deviation": -1
+}
+Returns: HTTP codes (200 OK + ride_num, 400, 500 etc)
+
+//yyyymmdd
+DELETE /ride/{date}/{ride_num} // not impl., think about auth (who deletes?)
+GET /ride/{date}/{ride_num} // not impl.
+
+
+POST /ride/request // optional: book for multiple people
+{
+	"First Name": "",
+	"Last Name": "",
+	"Phone Number": "",
+	"Cities": [],
+	"Departure Date": "",
+}
+Returns: HTTP codes (200 OK + ride_num, 400, 500 etc)
+
+GET /snapshot
+{
+    "Rides": [{}],
+    "RideRequests": [{}]
+}
+
+
+// gRPC
+rpc NewRide(Person person, Ride ride) returns (NewRideResponse) {}
+rpc RequestRide(Person person, RideRequest rideRequest) returns (RideRequestResponse) {}
+rpc CitySnapshot() returns (CitySnapshot)
+
+message Person {
+	required string first_name = 1;
+	required string last_name = 2;
+	required string phone_number = 3;
+}
+
+message Ride {
+	required string starting_position = 1;
+	required string ending_position = 2;
+	required date departure_date = 3;
+	required int vacancies = 4;
+	required int permitted_deviation = 5;
+}
+
+message RideRequest {
+	required string starting_position = 1;
+	required string ending_position = 2;
+	required string departure_date = 3;
+}
+
+message CitySnapshot {
+	repeated Ride rides = 1;
+	repeated RideRequest requests = 2;
+}
+
+// Zookeeper of city
+/rides/{date}/ride_id.json
+/requests/{date}/request_id.json // contains ride id
+
+// Zookeeper of all
+
+
+// When trying to book multiple rides, the operations are:
+// 1. Get appropriate rides for the request
+// 2. Lock them (ephemeral), in the order of increasing ids (this solves deadlock like the dining philosophers problem)
+// 3. Check (again) that they are good for the request. If not, release look for other rides
+// 4. Transaction - decrease vacancies in each, and write request file
+// 5. Release
+
+
+/* Write about:
+1. We send RPC to all cities. If we want to scale, divide to regions.
+2. Add DNS for load balancing
+*/

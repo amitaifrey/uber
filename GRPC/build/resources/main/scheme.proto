@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated";
+option java_outer_classname = "UberProto";
+option objc_class_prefix = "UBR";
+import "google/protobuf/empty.proto";
+
+package uber;
+
+service UberService {
+  rpc OfferRide(RideOffer) returns (RideOfferResponse) {}
+  rpc RequestRide(RideRequest) returns (RideRequestResponse) {}
+  rpc CitySnapshot(google.protobuf.Empty) returns (Snapshot) {}
+}
+
+message Person {
+  string first_name = 1;
+  string last_name = 2;
+  string phone_number = 3;
+}
+
+message Ride {
+  string starting_position = 1;
+  string ending_position = 2;
+  string departure_date = 3;
+}
+
+message RideOfferInfo {
+  int32 vacancies = 1;
+  int32 permitted_deviation = 2;
+}
+
+message RideRequest {
+  Person person = 1;
+  Ride ride = 2;
+}
+
+message RideOffer {
+  Person person = 1;
+  Ride ride = 2;
+  RideOfferInfo info = 3;
+}
+
+message RideOfferResponse {}
+message RideRequestResponse {}
+
+message Snapshot {
+  repeated RideOffer rides = 1;
+  repeated RideRequest requests = 2;
+}
