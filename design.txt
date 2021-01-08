@@ -71,6 +71,7 @@ message CitySnapshot {
 
 // Zookeeper of all
 
+// A -> B -> C -> D
 
 // When trying to book multiple rides, the operations are:
 // 1. Get appropriate rides for the request
@@ -79,6 +80,16 @@ message CitySnapshot {
 // 4. Transaction - decrease vacancies in each, and write request file
 // 5. Release
 
+
+// in all:
+// /tx/id (contains rides to consume)
+// each server watches /tx, and when sees a new transaction write to its local shard /tx/id - a lock file showing tha
+// this server will handle this transaction
+// then each shard will handle the transaction internally, and the leader will write to the /tx/id/shard_name commit/abort
+// then coordinator will transaction a commit/abort to all
+// they all commit, then write done to the files
+// coord exits
+// if not all done / timeout - abort!
 
 /* Write about:
 1. We send RPC to all cities. If we want to scale, divide to regions.

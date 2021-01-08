@@ -21,8 +21,8 @@ repositories {
     mavenLocal()
 }
 
-def grpcVersion = '1.33.0' // CURRENT_GRPC_VERSION
-def protobufVersion = '3.13.0'
+def grpcVersion = '1.34.1' // CURRENT_GRPC_VERSION
+def protobufVersion = '3.14.0'
 def protocVersion = protobufVersion
 
 dependencies {
@@ -48,6 +48,9 @@ dependencies {
     }
 }
 
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
 
 // Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
 sourceSets {

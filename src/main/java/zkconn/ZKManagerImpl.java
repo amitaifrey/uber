@@ -1,12 +1,10 @@
 package zkconn;
 
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class ZKManagerImpl implements ZKManager {
     private static ZooKeeper zkeeper;
@@ -36,13 +34,48 @@ public class ZKManagerImpl implements ZKManager {
                 CreateMode.PERSISTENT);
     }
 
-    public Object getZNodeData(String path, boolean watchFlag)
+    public void createEphemeral(String path, byte[] data)
             throws KeeperException,
-            InterruptedException, UnsupportedEncodingException {
+            InterruptedException {
+
+        zkeeper.create(
+                path,
+                data,
+                ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                CreateMode.EPHEMERAL);
+    }
+
+    public void createSequential(String path, byte[] data)
+            throws KeeperException,
+            InterruptedException {
+
+        zkeeper.create(
+                path,
+                data,
+                ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                CreateMode.PERSISTENT_SEQUENTIAL);
+    }
+
+    public List<String> getChildren(String path)
+            throws KeeperException,
+            InterruptedException {
+
+        return zkeeper.getChildren(path, false);
+    }
+
+    public void addWatch(String path, Watcher watcher, AddWatchMode mode)
+            throws KeeperException,
+            InterruptedException {
+
+        zkeeper.addWatch(path, watcher, mode);
+    }
+
+    public byte[] getZNodeData(String path, boolean watchFlag)
+            throws KeeperException,
+            InterruptedException {
 
         byte[] b = null;
-        b = zkeeper.getData(path, null, null);
-        return new String(b, "UTF-8");
+        return zkeeper.getData(path, null, null);
     }
 
     public void update(String path, byte[] data) throws KeeperException,

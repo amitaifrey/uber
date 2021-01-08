@@ -26,6 +26,11 @@ message Ride {
   string departure_date = 3;
 }
 
+message RideResponse {
+  Ride ride = 1;
+  int32 id = 2;
+}
+
 message RideOfferInfo {
   int32 vacancies = 1;
   int32 permitted_deviation = 2;
@@ -36,16 +41,33 @@ message RideRequest {
   Ride ride = 2;
 }
 
+message PlanRequest {
+  Person person = 1;
+  string departure_date = 2;
+  repeated string cities = 3;
+}
+
 message RideOffer {
   Person person = 1;
   Ride ride = 2;
   RideOfferInfo info = 3;
 }
 
+message RideOfferSnapshot {
+  RideOffer offer = 1;
+  repeated RideRequest requests = 2;
+}
+
 message RideOfferResponse {}
-message RideRequestResponse {}
+message RideRequestResponse {
+  repeated RideResponse responses = 1;
+}
+
+message CitySnapshot {
+  string name = 1;
+  repeated RideOfferSnapshot rides = 2;
+}
 
 message Snapshot {
-  repeated RideOffer rides = 1;
-  repeated RideRequest requests = 2;
+  repeated CitySnapshot snapshots = 1;
 }

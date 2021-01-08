@@ -8,50 +8,26 @@ public interface SnapshotOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
-  java.util.List<generated.RideOffer> 
-      getRidesList();
+  java.util.List<generated.CitySnapshot> 
+      getSnapshotsList();
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
-  generated.RideOffer getRides(int index);
+  generated.CitySnapshot getSnapshots(int index);
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
-  int getRidesCount();
+  int getSnapshotsCount();
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
-  java.util.List<? extends generated.RideOfferOrBuilder> 
-      getRidesOrBuilderList();
+  java.util.List<? extends generated.CitySnapshotOrBuilder> 
+      getSnapshotsOrBuilderList();
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
-  generated.RideOfferOrBuilder getRidesOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  java.util.List<generated.RideRequest> 
-      getRequestsList();
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  generated.RideRequest getRequests(int index);
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  int getRequestsCount();
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  java.util.List<? extends generated.RideRequestOrBuilder> 
-      getRequestsOrBuilderList();
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  generated.RideRequestOrBuilder getRequestsOrBuilder(
+  generated.CitySnapshotOrBuilder getSnapshotsOrBuilder(
       int index);
 }

@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private RideRequestResponse() {
+    responses_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -38,6 +39,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -48,6 +50,15 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
+          case 10: {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              responses_ = new java.util.ArrayList<generated.RideResponse>();
+              mutable_bitField0_ |= 0x00000001;
+            }
+            responses_.add(
+                input.readMessage(generated.RideResponse.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -63,6 +74,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000001) != 0)) {
+        responses_ = java.util.Collections.unmodifiableList(responses_);
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -80,6 +94,46 @@ private static final long serialVersionUID = 0L;
             generated.RideRequestResponse.class, generated.RideRequestResponse.Builder.class);
   }
 
+  public static final int RESPONSES_FIELD_NUMBER = 1;
+  private java.util.List<generated.RideResponse> responses_;
+  /**
+   * <code>repeated .uber.RideResponse responses = 1;</code>
+   */
+  @java.lang.Override
+  public java.util.List<generated.RideResponse> getResponsesList() {
+    return responses_;
+  }
+  /**
+   * <code>repeated .uber.RideResponse responses = 1;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends generated.RideResponseOrBuilder> 
+      getResponsesOrBuilderList() {
+    return responses_;
+  }
+  /**
+   * <code>repeated .uber.RideResponse responses = 1;</code>
+   */
+  @java.lang.Override
+  public int getResponsesCount() {
+    return responses_.size();
+  }
+  /**
+   * <code>repeated .uber.RideResponse responses = 1;</code>
+   */
+  @java.lang.Override
+  public generated.RideResponse getResponses(int index) {
+    return responses_.get(index);
+  }
+  /**
+   * <code>repeated .uber.RideResponse responses = 1;</code>
+   */
+  @java.lang.Override
+  public generated.RideResponseOrBuilder getResponsesOrBuilder(
+      int index) {
+    return responses_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -94,6 +148,9 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    for (int i = 0; i < responses_.size(); i++) {
+      output.writeMessage(1, responses_.get(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -103,6 +160,10 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    for (int i = 0; i < responses_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, responses_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -118,6 +179,8 @@ private static final long serialVersionUID = 0L;
     }
     generated.RideRequestResponse other = (generated.RideRequestResponse) obj;
 
+    if (!getResponsesList()
+        .equals(other.getResponsesList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -129,6 +192,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    if (getResponsesCount() > 0) {
+      hash = (37 * hash) + RESPONSES_FIELD_NUMBER;
+      hash = (53 * hash) + getResponsesList().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -257,11 +324,18 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getResponsesFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      if (responsesBuilder_ == null) {
+        responses_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+      } else {
+        responsesBuilder_.clear();
+      }
       return this;
     }
 
@@ -288,6 +362,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.RideRequestResponse buildPartial() {
       generated.RideRequestResponse result = new generated.RideRequestResponse(this);
+      int from_bitField0_ = bitField0_;
+      if (responsesBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          responses_ = java.util.Collections.unmodifiableList(responses_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.responses_ = responses_;
+      } else {
+        result.responses_ = responsesBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -336,6 +420,32 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.RideRequestResponse other) {
       if (other == generated.RideRequestResponse.getDefaultInstance()) return this;
+      if (responsesBuilder_ == null) {
+        if (!other.responses_.isEmpty()) {
+          if (responses_.isEmpty()) {
+            responses_ = other.responses_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureResponsesIsMutable();
+            responses_.addAll(other.responses_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.responses_.isEmpty()) {
+          if (responsesBuilder_.isEmpty()) {
+            responsesBuilder_.dispose();
+            responsesBuilder_ = null;
+            responses_ = other.responses_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            responsesBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getResponsesFieldBuilder() : null;
+          } else {
+            responsesBuilder_.addAllMessages(other.responses_);
+          }
+        }
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -363,6 +473,247 @@ private static final long serialVersionUID = 0L;
         }
       }
       return this;
+    }
+    private int bitField0_;
+
+    private java.util.List<generated.RideResponse> responses_ =
+      java.util.Collections.emptyList();
+    private void ensureResponsesIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        responses_ = new java.util.ArrayList<generated.RideResponse>(responses_);
+        bitField0_ |= 0x00000001;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        generated.RideResponse, generated.RideResponse.Builder, generated.RideResponseOrBuilder> responsesBuilder_;
+
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public java.util.List<generated.RideResponse> getResponsesList() {
+      if (responsesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(responses_);
+      } else {
+        return responsesBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public int getResponsesCount() {
+      if (responsesBuilder_ == null) {
+        return responses_.size();
+      } else {
+        return responsesBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public generated.RideResponse getResponses(int index) {
+      if (responsesBuilder_ == null) {
+        return responses_.get(index);
+      } else {
+        return responsesBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder setResponses(
+        int index, generated.RideResponse value) {
+      if (responsesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureResponsesIsMutable();
+        responses_.set(index, value);
+        onChanged();
+      } else {
+        responsesBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder setResponses(
+        int index, generated.RideResponse.Builder builderForValue) {
+      if (responsesBuilder_ == null) {
+        ensureResponsesIsMutable();
+        responses_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        responsesBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder addResponses(generated.RideResponse value) {
+      if (responsesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureResponsesIsMutable();
+        responses_.add(value);
+        onChanged();
+      } else {
+        responsesBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder addResponses(
+        int index, generated.RideResponse value) {
+      if (responsesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureResponsesIsMutable();
+        responses_.add(index, value);
+        onChanged();
+      } else {
+        responsesBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder addResponses(
+        generated.RideResponse.Builder builderForValue) {
+      if (responsesBuilder_ == null) {
+        ensureResponsesIsMutable();
+        responses_.add(builderForValue.build());
+        onChanged();
+      } else {
+        responsesBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder addResponses(
+        int index, generated.RideResponse.Builder builderForValue) {
+      if (responsesBuilder_ == null) {
+        ensureResponsesIsMutable();
+        responses_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        responsesBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder addAllResponses(
+        java.lang.Iterable<? extends generated.RideResponse> values) {
+      if (responsesBuilder_ == null) {
+        ensureResponsesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, responses_);
+        onChanged();
+      } else {
+        responsesBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder clearResponses() {
+      if (responsesBuilder_ == null) {
+        responses_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+      } else {
+        responsesBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public Builder removeResponses(int index) {
+      if (responsesBuilder_ == null) {
+        ensureResponsesIsMutable();
+        responses_.remove(index);
+        onChanged();
+      } else {
+        responsesBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public generated.RideResponse.Builder getResponsesBuilder(
+        int index) {
+      return getResponsesFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public generated.RideResponseOrBuilder getResponsesOrBuilder(
+        int index) {
+      if (responsesBuilder_ == null) {
+        return responses_.get(index);  } else {
+        return responsesBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public java.util.List<? extends generated.RideResponseOrBuilder> 
+         getResponsesOrBuilderList() {
+      if (responsesBuilder_ != null) {
+        return responsesBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(responses_);
+      }
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public generated.RideResponse.Builder addResponsesBuilder() {
+      return getResponsesFieldBuilder().addBuilder(
+          generated.RideResponse.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public generated.RideResponse.Builder addResponsesBuilder(
+        int index) {
+      return getResponsesFieldBuilder().addBuilder(
+          index, generated.RideResponse.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .uber.RideResponse responses = 1;</code>
+     */
+    public java.util.List<generated.RideResponse.Builder> 
+         getResponsesBuilderList() {
+      return getResponsesFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        generated.RideResponse, generated.RideResponse.Builder, generated.RideResponseOrBuilder> 
+        getResponsesFieldBuilder() {
+      if (responsesBuilder_ == null) {
+        responsesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            generated.RideResponse, generated.RideResponse.Builder, generated.RideResponseOrBuilder>(
+                responses_,
+                ((bitField0_ & 0x00000001) != 0),
+                getParentForChildren(),
+                isClean());
+        responses_ = null;
+      }
+      return responsesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

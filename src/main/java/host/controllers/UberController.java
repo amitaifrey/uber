@@ -1,7 +1,9 @@
 package host.controllers;
+import com.google.protobuf.util.JsonFormat;
 import host.main;
 
 import logic.Logic;
+import org.apache.zookeeper.KeeperException;
 import org.springframework.web.bind.annotation.*;
 
 import generated.RideOffer;
@@ -13,20 +15,29 @@ import generated.Snapshot;
 @RestController
 public class UberController {
 
-    private Logic logic;
+    private final Logic logic;
 
     public UberController() {
         this.logic = main.logic;
     }
 
     @PostMapping("/ride/new")
-    RideOfferResponse newOffer(@RequestBody RideOffer offer) {
-        return null;
+    String newOffer(@RequestBody String offer) {
+        System.out.println(offer);
+        var builder = RideOffer.newBuilder();
+        try {
+            JsonFormat.parser().ignoringUnknownFields().merge(offer, builder);
+        } catch(Exception e) {
+            System.out.println(":(");
+            System.out.println(e);
+        }
+        var rideOffer = builder.build();
+        return logic.NewRide(rideOffer).toString();
     }
 
     @PostMapping("/ride/request")
-    RideRequestResponse newRequest(@RequestBody RideRequest request) {
-        return null;
+    String newRequest(@RequestBody RideRequest request) {
+        return "";
     }
 
 //    @PostMapping("/employees")
@@ -36,8 +47,8 @@ public class UberController {
 
     @ResponseBody
     @GetMapping("/snapshot")
-    Snapshot snapshot()  {
-        return null;
+    String snapshot()  {
+        return logic.GetSnapshot().toString();
     }
 
 //    @ResponseBody

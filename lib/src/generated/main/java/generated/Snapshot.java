@@ -16,8 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private Snapshot() {
-    rides_ = java.util.Collections.emptyList();
-    requests_ = java.util.Collections.emptyList();
+    snapshots_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -53,20 +52,11 @@ private static final long serialVersionUID = 0L;
             break;
           case 10: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              rides_ = new java.util.ArrayList<generated.RideOffer>();
+              snapshots_ = new java.util.ArrayList<generated.CitySnapshot>();
               mutable_bitField0_ |= 0x00000001;
             }
-            rides_.add(
-                input.readMessage(generated.RideOffer.parser(), extensionRegistry));
-            break;
-          }
-          case 18: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              requests_ = new java.util.ArrayList<generated.RideRequest>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            requests_.add(
-                input.readMessage(generated.RideRequest.parser(), extensionRegistry));
+            snapshots_.add(
+                input.readMessage(generated.CitySnapshot.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -85,10 +75,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        rides_ = java.util.Collections.unmodifiableList(rides_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        requests_ = java.util.Collections.unmodifiableList(requests_);
+        snapshots_ = java.util.Collections.unmodifiableList(snapshots_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -107,84 +94,44 @@ private static final long serialVersionUID = 0L;
             generated.Snapshot.class, generated.Snapshot.Builder.class);
   }
 
-  public static final int RIDES_FIELD_NUMBER = 1;
-  private java.util.List<generated.RideOffer> rides_;
+  public static final int SNAPSHOTS_FIELD_NUMBER = 1;
+  private java.util.List<generated.CitySnapshot> snapshots_;
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
   @java.lang.Override
-  public java.util.List<generated.RideOffer> getRidesList() {
-    return rides_;
+  public java.util.List<generated.CitySnapshot> getSnapshotsList() {
+    return snapshots_;
   }
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
   @java.lang.Override
-  public java.util.List<? extends generated.RideOfferOrBuilder> 
-      getRidesOrBuilderList() {
-    return rides_;
+  public java.util.List<? extends generated.CitySnapshotOrBuilder> 
+      getSnapshotsOrBuilderList() {
+    return snapshots_;
   }
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
   @java.lang.Override
-  public int getRidesCount() {
-    return rides_.size();
+  public int getSnapshotsCount() {
+    return snapshots_.size();
   }
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
   @java.lang.Override
-  public generated.RideOffer getRides(int index) {
-    return rides_.get(index);
+  public generated.CitySnapshot getSnapshots(int index) {
+    return snapshots_.get(index);
   }
   /**
-   * <code>repeated .uber.RideOffer rides = 1;</code>
+   * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
    */
   @java.lang.Override
-  public generated.RideOfferOrBuilder getRidesOrBuilder(
+  public generated.CitySnapshotOrBuilder getSnapshotsOrBuilder(
       int index) {
-    return rides_.get(index);
-  }
-
-  public static final int REQUESTS_FIELD_NUMBER = 2;
-  private java.util.List<generated.RideRequest> requests_;
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  @java.lang.Override
-  public java.util.List<generated.RideRequest> getRequestsList() {
-    return requests_;
-  }
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  @java.lang.Override
-  public java.util.List<? extends generated.RideRequestOrBuilder> 
-      getRequestsOrBuilderList() {
-    return requests_;
-  }
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  @java.lang.Override
-  public int getRequestsCount() {
-    return requests_.size();
-  }
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  @java.lang.Override
-  public generated.RideRequest getRequests(int index) {
-    return requests_.get(index);
-  }
-  /**
-   * <code>repeated .uber.RideRequest requests = 2;</code>
-   */
-  @java.lang.Override
-  public generated.RideRequestOrBuilder getRequestsOrBuilder(
-      int index) {
-    return requests_.get(index);
+    return snapshots_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -201,11 +148,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    for (int i = 0; i < rides_.size(); i++) {
-      output.writeMessage(1, rides_.get(i));
-    }
-    for (int i = 0; i < requests_.size(); i++) {
-      output.writeMessage(2, requests_.get(i));
+    for (int i = 0; i < snapshots_.size(); i++) {
+      output.writeMessage(1, snapshots_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -216,13 +160,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    for (int i = 0; i < rides_.size(); i++) {
+    for (int i = 0; i < snapshots_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, rides_.get(i));
-    }
-    for (int i = 0; i < requests_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, requests_.get(i));
+        .computeMessageSize(1, snapshots_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -239,10 +179,8 @@ private static final long serialVersionUID = 0L;
     }
     generated.Snapshot other = (generated.Snapshot) obj;
 
-    if (!getRidesList()
-        .equals(other.getRidesList())) return false;
-    if (!getRequestsList()
-        .equals(other.getRequestsList())) return false;
+    if (!getSnapshotsList()
+        .equals(other.getSnapshotsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -254,13 +192,9 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (getRidesCount() > 0) {
-      hash = (37 * hash) + RIDES_FIELD_NUMBER;
-      hash = (53 * hash) + getRidesList().hashCode();
-    }
-    if (getRequestsCount() > 0) {
-      hash = (37 * hash) + REQUESTS_FIELD_NUMBER;
-      hash = (53 * hash) + getRequestsList().hashCode();
+    if (getSnapshotsCount() > 0) {
+      hash = (37 * hash) + SNAPSHOTS_FIELD_NUMBER;
+      hash = (53 * hash) + getSnapshotsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -390,24 +324,17 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getRidesFieldBuilder();
-        getRequestsFieldBuilder();
+        getSnapshotsFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (ridesBuilder_ == null) {
-        rides_ = java.util.Collections.emptyList();
+      if (snapshotsBuilder_ == null) {
+        snapshots_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
       } else {
-        ridesBuilder_.clear();
-      }
-      if (requestsBuilder_ == null) {
-        requests_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      } else {
-        requestsBuilder_.clear();
+        snapshotsBuilder_.clear();
       }
       return this;
     }
@@ -436,23 +363,14 @@ private static final long serialVersionUID = 0L;
     public generated.Snapshot buildPartial() {
       generated.Snapshot result = new generated.Snapshot(this);
       int from_bitField0_ = bitField0_;
-      if (ridesBuilder_ == null) {
+      if (snapshotsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
-          rides_ = java.util.Collections.unmodifiableList(rides_);
+          snapshots_ = java.util.Collections.unmodifiableList(snapshots_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.rides_ = rides_;
+        result.snapshots_ = snapshots_;
       } else {
-        result.rides_ = ridesBuilder_.build();
-      }
-      if (requestsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
-          requests_ = java.util.Collections.unmodifiableList(requests_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.requests_ = requests_;
-      } else {
-        result.requests_ = requestsBuilder_.build();
+        result.snapshots_ = snapshotsBuilder_.build();
       }
       onBuilt();
       return result;
@@ -502,55 +420,29 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.Snapshot other) {
       if (other == generated.Snapshot.getDefaultInstance()) return this;
-      if (ridesBuilder_ == null) {
-        if (!other.rides_.isEmpty()) {
-          if (rides_.isEmpty()) {
-            rides_ = other.rides_;
+      if (snapshotsBuilder_ == null) {
+        if (!other.snapshots_.isEmpty()) {
+          if (snapshots_.isEmpty()) {
+            snapshots_ = other.snapshots_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureRidesIsMutable();
-            rides_.addAll(other.rides_);
+            ensureSnapshotsIsMutable();
+            snapshots_.addAll(other.snapshots_);
           }
           onChanged();
         }
       } else {
-        if (!other.rides_.isEmpty()) {
-          if (ridesBuilder_.isEmpty()) {
-            ridesBuilder_.dispose();
-            ridesBuilder_ = null;
-            rides_ = other.rides_;
+        if (!other.snapshots_.isEmpty()) {
+          if (snapshotsBuilder_.isEmpty()) {
+            snapshotsBuilder_.dispose();
+            snapshotsBuilder_ = null;
+            snapshots_ = other.snapshots_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            ridesBuilder_ = 
+            snapshotsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getRidesFieldBuilder() : null;
+                 getSnapshotsFieldBuilder() : null;
           } else {
-            ridesBuilder_.addAllMessages(other.rides_);
-          }
-        }
-      }
-      if (requestsBuilder_ == null) {
-        if (!other.requests_.isEmpty()) {
-          if (requests_.isEmpty()) {
-            requests_ = other.requests_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureRequestsIsMutable();
-            requests_.addAll(other.requests_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.requests_.isEmpty()) {
-          if (requestsBuilder_.isEmpty()) {
-            requestsBuilder_.dispose();
-            requestsBuilder_ = null;
-            requests_ = other.requests_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            requestsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getRequestsFieldBuilder() : null;
-          } else {
-            requestsBuilder_.addAllMessages(other.requests_);
+            snapshotsBuilder_.addAllMessages(other.snapshots_);
           }
         }
       }
@@ -584,484 +476,244 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<generated.RideOffer> rides_ =
+    private java.util.List<generated.CitySnapshot> snapshots_ =
       java.util.Collections.emptyList();
-    private void ensureRidesIsMutable() {
+    private void ensureSnapshotsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        rides_ = new java.util.ArrayList<generated.RideOffer>(rides_);
+        snapshots_ = new java.util.ArrayList<generated.CitySnapshot>(snapshots_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        generated.RideOffer, generated.RideOffer.Builder, generated.RideOfferOrBuilder> ridesBuilder_;
+        generated.CitySnapshot, generated.CitySnapshot.Builder, generated.CitySnapshotOrBuilder> snapshotsBuilder_;
 
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public java.util.List<generated.RideOffer> getRidesList() {
-      if (ridesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(rides_);
+    public java.util.List<generated.CitySnapshot> getSnapshotsList() {
+      if (snapshotsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(snapshots_);
       } else {
-        return ridesBuilder_.getMessageList();
+        return snapshotsBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public int getRidesCount() {
-      if (ridesBuilder_ == null) {
-        return rides_.size();
+    public int getSnapshotsCount() {
+      if (snapshotsBuilder_ == null) {
+        return snapshots_.size();
       } else {
-        return ridesBuilder_.getCount();
+        return snapshotsBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public generated.RideOffer getRides(int index) {
-      if (ridesBuilder_ == null) {
-        return rides_.get(index);
+    public generated.CitySnapshot getSnapshots(int index) {
+      if (snapshotsBuilder_ == null) {
+        return snapshots_.get(index);
       } else {
-        return ridesBuilder_.getMessage(index);
+        return snapshotsBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder setRides(
-        int index, generated.RideOffer value) {
-      if (ridesBuilder_ == null) {
+    public Builder setSnapshots(
+        int index, generated.CitySnapshot value) {
+      if (snapshotsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRidesIsMutable();
-        rides_.set(index, value);
+        ensureSnapshotsIsMutable();
+        snapshots_.set(index, value);
         onChanged();
       } else {
-        ridesBuilder_.setMessage(index, value);
+        snapshotsBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder setRides(
-        int index, generated.RideOffer.Builder builderForValue) {
-      if (ridesBuilder_ == null) {
-        ensureRidesIsMutable();
-        rides_.set(index, builderForValue.build());
+    public Builder setSnapshots(
+        int index, generated.CitySnapshot.Builder builderForValue) {
+      if (snapshotsBuilder_ == null) {
+        ensureSnapshotsIsMutable();
+        snapshots_.set(index, builderForValue.build());
         onChanged();
       } else {
-        ridesBuilder_.setMessage(index, builderForValue.build());
+        snapshotsBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder addRides(generated.RideOffer value) {
-      if (ridesBuilder_ == null) {
+    public Builder addSnapshots(generated.CitySnapshot value) {
+      if (snapshotsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRidesIsMutable();
-        rides_.add(value);
+        ensureSnapshotsIsMutable();
+        snapshots_.add(value);
         onChanged();
       } else {
-        ridesBuilder_.addMessage(value);
+        snapshotsBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder addRides(
-        int index, generated.RideOffer value) {
-      if (ridesBuilder_ == null) {
+    public Builder addSnapshots(
+        int index, generated.CitySnapshot value) {
+      if (snapshotsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRidesIsMutable();
-        rides_.add(index, value);
+        ensureSnapshotsIsMutable();
+        snapshots_.add(index, value);
         onChanged();
       } else {
-        ridesBuilder_.addMessage(index, value);
+        snapshotsBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder addRides(
-        generated.RideOffer.Builder builderForValue) {
-      if (ridesBuilder_ == null) {
-        ensureRidesIsMutable();
-        rides_.add(builderForValue.build());
+    public Builder addSnapshots(
+        generated.CitySnapshot.Builder builderForValue) {
+      if (snapshotsBuilder_ == null) {
+        ensureSnapshotsIsMutable();
+        snapshots_.add(builderForValue.build());
         onChanged();
       } else {
-        ridesBuilder_.addMessage(builderForValue.build());
+        snapshotsBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder addRides(
-        int index, generated.RideOffer.Builder builderForValue) {
-      if (ridesBuilder_ == null) {
-        ensureRidesIsMutable();
-        rides_.add(index, builderForValue.build());
+    public Builder addSnapshots(
+        int index, generated.CitySnapshot.Builder builderForValue) {
+      if (snapshotsBuilder_ == null) {
+        ensureSnapshotsIsMutable();
+        snapshots_.add(index, builderForValue.build());
         onChanged();
       } else {
-        ridesBuilder_.addMessage(index, builderForValue.build());
+        snapshotsBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder addAllRides(
-        java.lang.Iterable<? extends generated.RideOffer> values) {
-      if (ridesBuilder_ == null) {
-        ensureRidesIsMutable();
+    public Builder addAllSnapshots(
+        java.lang.Iterable<? extends generated.CitySnapshot> values) {
+      if (snapshotsBuilder_ == null) {
+        ensureSnapshotsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, rides_);
+            values, snapshots_);
         onChanged();
       } else {
-        ridesBuilder_.addAllMessages(values);
+        snapshotsBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder clearRides() {
-      if (ridesBuilder_ == null) {
-        rides_ = java.util.Collections.emptyList();
+    public Builder clearSnapshots() {
+      if (snapshotsBuilder_ == null) {
+        snapshots_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
-        ridesBuilder_.clear();
+        snapshotsBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public Builder removeRides(int index) {
-      if (ridesBuilder_ == null) {
-        ensureRidesIsMutable();
-        rides_.remove(index);
+    public Builder removeSnapshots(int index) {
+      if (snapshotsBuilder_ == null) {
+        ensureSnapshotsIsMutable();
+        snapshots_.remove(index);
         onChanged();
       } else {
-        ridesBuilder_.remove(index);
+        snapshotsBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public generated.RideOffer.Builder getRidesBuilder(
+    public generated.CitySnapshot.Builder getSnapshotsBuilder(
         int index) {
-      return getRidesFieldBuilder().getBuilder(index);
+      return getSnapshotsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public generated.RideOfferOrBuilder getRidesOrBuilder(
+    public generated.CitySnapshotOrBuilder getSnapshotsOrBuilder(
         int index) {
-      if (ridesBuilder_ == null) {
-        return rides_.get(index);  } else {
-        return ridesBuilder_.getMessageOrBuilder(index);
+      if (snapshotsBuilder_ == null) {
+        return snapshots_.get(index);  } else {
+        return snapshotsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public java.util.List<? extends generated.RideOfferOrBuilder> 
-         getRidesOrBuilderList() {
-      if (ridesBuilder_ != null) {
-        return ridesBuilder_.getMessageOrBuilderList();
+    public java.util.List<? extends generated.CitySnapshotOrBuilder> 
+         getSnapshotsOrBuilderList() {
+      if (snapshotsBuilder_ != null) {
+        return snapshotsBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(rides_);
+        return java.util.Collections.unmodifiableList(snapshots_);
       }
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public generated.RideOffer.Builder addRidesBuilder() {
-      return getRidesFieldBuilder().addBuilder(
-          generated.RideOffer.getDefaultInstance());
+    public generated.CitySnapshot.Builder addSnapshotsBuilder() {
+      return getSnapshotsFieldBuilder().addBuilder(
+          generated.CitySnapshot.getDefaultInstance());
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public generated.RideOffer.Builder addRidesBuilder(
+    public generated.CitySnapshot.Builder addSnapshotsBuilder(
         int index) {
-      return getRidesFieldBuilder().addBuilder(
-          index, generated.RideOffer.getDefaultInstance());
+      return getSnapshotsFieldBuilder().addBuilder(
+          index, generated.CitySnapshot.getDefaultInstance());
     }
     /**
-     * <code>repeated .uber.RideOffer rides = 1;</code>
+     * <code>repeated .uber.CitySnapshot snapshots = 1;</code>
      */
-    public java.util.List<generated.RideOffer.Builder> 
-         getRidesBuilderList() {
-      return getRidesFieldBuilder().getBuilderList();
+    public java.util.List<generated.CitySnapshot.Builder> 
+         getSnapshotsBuilderList() {
+      return getSnapshotsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        generated.RideOffer, generated.RideOffer.Builder, generated.RideOfferOrBuilder> 
-        getRidesFieldBuilder() {
-      if (ridesBuilder_ == null) {
-        ridesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            generated.RideOffer, generated.RideOffer.Builder, generated.RideOfferOrBuilder>(
-                rides_,
+        generated.CitySnapshot, generated.CitySnapshot.Builder, generated.CitySnapshotOrBuilder> 
+        getSnapshotsFieldBuilder() {
+      if (snapshotsBuilder_ == null) {
+        snapshotsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            generated.CitySnapshot, generated.CitySnapshot.Builder, generated.CitySnapshotOrBuilder>(
+                snapshots_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        rides_ = null;
+        snapshots_ = null;
       }
-      return ridesBuilder_;
-    }
-
-    private java.util.List<generated.RideRequest> requests_ =
-      java.util.Collections.emptyList();
-    private void ensureRequestsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        requests_ = new java.util.ArrayList<generated.RideRequest>(requests_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        generated.RideRequest, generated.RideRequest.Builder, generated.RideRequestOrBuilder> requestsBuilder_;
-
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public java.util.List<generated.RideRequest> getRequestsList() {
-      if (requestsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(requests_);
-      } else {
-        return requestsBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public int getRequestsCount() {
-      if (requestsBuilder_ == null) {
-        return requests_.size();
-      } else {
-        return requestsBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public generated.RideRequest getRequests(int index) {
-      if (requestsBuilder_ == null) {
-        return requests_.get(index);
-      } else {
-        return requestsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder setRequests(
-        int index, generated.RideRequest value) {
-      if (requestsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureRequestsIsMutable();
-        requests_.set(index, value);
-        onChanged();
-      } else {
-        requestsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder setRequests(
-        int index, generated.RideRequest.Builder builderForValue) {
-      if (requestsBuilder_ == null) {
-        ensureRequestsIsMutable();
-        requests_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        requestsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder addRequests(generated.RideRequest value) {
-      if (requestsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureRequestsIsMutable();
-        requests_.add(value);
-        onChanged();
-      } else {
-        requestsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder addRequests(
-        int index, generated.RideRequest value) {
-      if (requestsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureRequestsIsMutable();
-        requests_.add(index, value);
-        onChanged();
-      } else {
-        requestsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder addRequests(
-        generated.RideRequest.Builder builderForValue) {
-      if (requestsBuilder_ == null) {
-        ensureRequestsIsMutable();
-        requests_.add(builderForValue.build());
-        onChanged();
-      } else {
-        requestsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder addRequests(
-        int index, generated.RideRequest.Builder builderForValue) {
-      if (requestsBuilder_ == null) {
-        ensureRequestsIsMutable();
-        requests_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        requestsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder addAllRequests(
-        java.lang.Iterable<? extends generated.RideRequest> values) {
-      if (requestsBuilder_ == null) {
-        ensureRequestsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, requests_);
-        onChanged();
-      } else {
-        requestsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder clearRequests() {
-      if (requestsBuilder_ == null) {
-        requests_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        requestsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public Builder removeRequests(int index) {
-      if (requestsBuilder_ == null) {
-        ensureRequestsIsMutable();
-        requests_.remove(index);
-        onChanged();
-      } else {
-        requestsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public generated.RideRequest.Builder getRequestsBuilder(
-        int index) {
-      return getRequestsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public generated.RideRequestOrBuilder getRequestsOrBuilder(
-        int index) {
-      if (requestsBuilder_ == null) {
-        return requests_.get(index);  } else {
-        return requestsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public java.util.List<? extends generated.RideRequestOrBuilder> 
-         getRequestsOrBuilderList() {
-      if (requestsBuilder_ != null) {
-        return requestsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(requests_);
-      }
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public generated.RideRequest.Builder addRequestsBuilder() {
-      return getRequestsFieldBuilder().addBuilder(
-          generated.RideRequest.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public generated.RideRequest.Builder addRequestsBuilder(
-        int index) {
-      return getRequestsFieldBuilder().addBuilder(
-          index, generated.RideRequest.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .uber.RideRequest requests = 2;</code>
-     */
-    public java.util.List<generated.RideRequest.Builder> 
-         getRequestsBuilderList() {
-      return getRequestsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        generated.RideRequest, generated.RideRequest.Builder, generated.RideRequestOrBuilder> 
-        getRequestsFieldBuilder() {
-      if (requestsBuilder_ == null) {
-        requestsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            generated.RideRequest, generated.RideRequest.Builder, generated.RideRequestOrBuilder>(
-                requests_,
-                ((bitField0_ & 0x00000002) != 0),
-                getParentForChildren(),
-                isClean());
-        requests_ = null;
-      }
-      return requestsBuilder_;
+      return snapshotsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
