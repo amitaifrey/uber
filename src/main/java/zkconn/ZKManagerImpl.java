@@ -1,5 +1,6 @@
 package zkconn;
 
+import io.micrometer.core.instrument.binder.db.MetricsDSLContext;
 import org.apache.zookeeper.*;
 
 import java.io.IOException;
@@ -7,8 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class ZKManagerImpl implements ZKManager {
-    private static ZooKeeper zkeeper;
-    private static ZKConnection zkConnection;
+    public static ZooKeeper zkeeper;
+    public static ZKConnection zkConnection;
 
     public ZKManagerImpl(String host) throws IOException, InterruptedException {
         initialize(host);
@@ -21,6 +22,13 @@ public class ZKManagerImpl implements ZKManager {
 
     public void closeConnection() throws InterruptedException {
         zkConnection.close();
+    }
+
+    public void delete(String path)
+            throws KeeperException,
+            InterruptedException {
+
+        zkeeper.delete(path, -1);
     }
 
     public void create(String path, byte[] data)

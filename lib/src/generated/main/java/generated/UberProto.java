@@ -74,6 +74,21 @@ public final class UberProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_uber_Snapshot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_uber_Configuration_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_uber_Configuration_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_uber_City_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_uber_City_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_uber_MyCity_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_uber_MyCity_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -104,13 +119,18 @@ public final class UberProto {
       "\tresponses\030\001 \003(\0132\022.uber.RideResponse\"D\n\014" +
       "CitySnapshot\022\014\n\004name\030\001 \001(\t\022&\n\005rides\030\002 \003(" +
       "\0132\027.uber.RideOfferSnapshot\"1\n\010Snapshot\022%" +
-      "\n\tsnapshots\030\001 \003(\0132\022.uber.CitySnapshot2\277\001" +
-      "\n\013UberService\0227\n\tOfferRide\022\017.uber.RideOf" +
-      "fer\032\027.uber.RideOfferResponse\"\000\022=\n\013Reques" +
-      "tRide\022\021.uber.RideRequest\032\031.uber.RideRequ" +
-      "estResponse\"\000\0228\n\014CitySnapshot\022\026.google.p" +
-      "rotobuf.Empty\032\016.uber.Snapshot\"\000B\036\n\tgener" +
-      "atedB\tUberProtoP\001\242\002\003UBRb\006proto3"
+      "\n\tsnapshots\030\001 \003(\0132\022.uber.CitySnapshot\"P\n" +
+      "\rConfiguration\022\036\n\nall_cities\030\001 \003(\0132\n.ube" +
+      "r.City\022\037\n\tmy_cities\030\002 \003(\0132\014.uber.MyCity\"" +
+      "*\n\004City\022\014\n\004name\030\001 \001(\t\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 " +
+      "\001(\005\"0\n\006MyCity\022\030\n\004city\030\001 \001(\0132\n.uber.City\022" +
+      "\014\n\004port\030\002 \001(\0052\277\001\n\013UberService\0227\n\tOfferRi" +
+      "de\022\017.uber.RideOffer\032\027.uber.RideOfferResp" +
+      "onse\"\000\022=\n\013RequestRide\022\021.uber.RideRequest" +
+      "\032\031.uber.RideRequestResponse\"\000\0228\n\014CitySna" +
+      "pshot\022\026.google.protobuf.Empty\032\016.uber.Sna" +
+      "pshot\"\000B\036\n\tgeneratedB\tUberProtoP\001\242\002\003UBRb" +
+      "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -189,6 +209,24 @@ public final class UberProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Snapshot_descriptor,
         new java.lang.String[] { "Snapshots", });
+    internal_static_uber_Configuration_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_uber_Configuration_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_uber_Configuration_descriptor,
+        new java.lang.String[] { "AllCities", "MyCities", });
+    internal_static_uber_City_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_uber_City_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_uber_City_descriptor,
+        new java.lang.String[] { "Name", "X", "Y", });
+    internal_static_uber_MyCity_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_uber_MyCity_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_uber_MyCity_descriptor,
+        new java.lang.String[] { "City", "Port", });
     com.google.protobuf.EmptyProto.getDescriptor();
   }
 
