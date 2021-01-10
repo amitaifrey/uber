@@ -1,9 +1,8 @@
 package rpc;
 
-import generated.UberServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-
+import generated.UberServiceGrpc;
 import java.util.logging.Logger;
 
 
@@ -19,10 +18,7 @@ public class UberRPCClient {
         asyncStub = UberServiceGrpc.newStub(channel);
     }
 
-    /**
-     * Blocking server-streaming example. Calls listFeatures with a rectangle of interest. Prints each
-     * response feature as it arrives.
-     */
+
     public void listFeatures(int lowLat, int lowLon, int hiLat, int hiLon) {
 //        Rectangle request =
 //                Rectangle.newBuilder()

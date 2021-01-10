@@ -64,6 +64,17 @@ public class ZKManagerImpl implements ZKManager {
                 CreateMode.PERSISTENT_SEQUENTIAL);
     }
 
+    public void createSequentialEphemeral(String path, byte[] data)
+            throws KeeperException,
+            InterruptedException {
+
+        zkeeper.create(
+                path,
+                data,
+                ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                CreateMode.EPHEMERAL_SEQUENTIAL);
+    }
+
     public List<String> getChildren(String path)
             throws KeeperException,
             InterruptedException {

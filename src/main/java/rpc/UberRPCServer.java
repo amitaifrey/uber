@@ -5,6 +5,7 @@ import io.grpc.ServerBuilder;
 import logic.Logic;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -13,20 +14,17 @@ public class UberRPCServer {
 
     private final int port;
     private final Server server;
-    private Logic logic;
 
-    public UberRPCServer(int port, Logic logic) throws IOException {
-        this(ServerBuilder.forPort(port), port);
-        this.logic = logic;
+    public UberRPCServer(int port, HashMap<String, Logic> logics) throws IOException {
+        this(ServerBuilder.forPort(port), logics, port);
     }
 
     /**
      * Create a RouteGuide server using serverBuilder as a base and features as data.
      */
-    public UberRPCServer(ServerBuilder<?> serverBuilder, int port) {
+    public UberRPCServer(ServerBuilder<?> serverBuilder, HashMap<String, Logic> logics, int port) {
         this.port = port;
-        server = serverBuilder.addService(new UberService())
-                .build();
+        server = serverBuilder.addService(new UberService(logics)).build();
     }
 
     /**

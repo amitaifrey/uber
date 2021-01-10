@@ -9,9 +9,20 @@ import "google/protobuf/empty.proto";
 package uber;
 
 service UberService {
-  rpc OfferRide(RideOffer) returns (RideOfferResponse) {}
-  rpc RequestRide(RideRequest) returns (RideRequestResponse) {}
-  rpc CitySnapshot(google.protobuf.Empty) returns (Snapshot) {}
+  // shard ops
+  rpc AddRideOffer(RideOffer) returns (google.protobuf.Empty) {}
+  rpc LockRide(RideOffer) returns (Result) {}
+  rpc CommitRide(CommitRequest) returns (Result) {}
+
+  // cluster ops
+  rpc RequestRide(RidePlanRequest) returns (PlanRideOffers) {}
+  rpc GetCitySnapshot(City) returns (CitySnapshot) {}
+}
+
+// A: []
+
+message Result {
+  bool result = 1;
 }
 
 message Person {
@@ -26,41 +37,50 @@ message Ride {
   string departure_date = 3;
 }
 
-message RideResponse {
-  Ride ride = 1;
-  int32 id = 2;
-}
-
 message RideOfferInfo {
   int32 vacancies = 1;
   int32 permitted_deviation = 2;
-}
-
-message RideRequest {
-  Person person = 1;
-  Ride ride = 2;
-}
-
-message PlanRequest {
-  Person person = 1;
-  string departure_date = 2;
-  repeated string cities = 3;
 }
 
 message RideOffer {
   Person person = 1;
   Ride ride = 2;
   RideOfferInfo info = 3;
+  string uuid = 4;
+}
+
+message RideRequest {
+  Person person = 1;
+  string departure_date = 2;
+  repeated string cities = 3;
+}
+
+message RidePlanRequest {
+  RideRequest request = 1;
+  string city = 2;
+}
+
+message RideOffers {
+  repeated RideOffer offers = 1;
+}
+
+message PlanRideOffers {
+  repeated RideOffers ride_offers = 1;
+}
+
+message CommitRequest {
+  RideOffer offer = 1;
+  CommitInfo info = 2;
+}
+
+message CommitInfo {
+  Person person = 1;
+  string id = 2;
 }
 
 message RideOfferSnapshot {
   RideOffer offer = 1;
-  repeated RideRequest requests = 2;
-}
-
-message RideOfferResponse {}
-message RideRequestResponse {
-  repeated RideResponse responses = 1;
+  repeated CommitInfo infos = 2;
 }
 
 message CitySnapshot {

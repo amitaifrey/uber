@@ -1,28 +1,26 @@
 package host.controllers;
 import com.google.protobuf.util.JsonFormat;
 import host.main;
-
 import logic.Logic;
 import org.apache.zookeeper.KeeperException;
 import org.springframework.web.bind.annotation.*;
-
 import generated.RideOffer;
-import generated.RideOfferResponse;
 import generated.RideRequest;
-import generated.RideRequestResponse;
-import generated.Snapshot;
+
+import java.util.HashMap;
+
 
 @RestController
 public class UberController {
 
-    private final Logic logic;
+    private HashMap<String, Logic> logics;
 
     public UberController() {
-        this.logic = main.logic;
+        this.logics = main.logics;
     }
 
     @PostMapping("/ride/new")
-    String newOffer(@RequestBody String offer) {
+    String newOffer(@RequestBody String offer) throws KeeperException, InterruptedException {
         System.out.println(offer);
         var builder = RideOffer.newBuilder();
         try {
@@ -32,36 +30,25 @@ public class UberController {
             System.out.println(e);
         }
         var rideOffer = builder.build();
-        return logic.NewRide(rideOffer).toString();
+        return logics.get("city").NewRide(rideOffer).toString();
     }
 
     @PostMapping("/ride/request")
-    String newRequest(@RequestBody RideRequest request) {
-        return "";
+    String newRequest(@RequestBody String req) {
+        var builder = RideRequest.newBuilder();
+        try {
+            JsonFormat.parser().ignoringUnknownFields().merge(req, builder);
+        } catch(Exception e) {
+            System.out.println(":(");
+            System.out.println(e);
+        }
+        var request = builder.build();
+        return logics.get("city").PlanRide(request);
     }
-
-//    @PostMapping("/employees")
-//    Employee newEmployee(@RequestBody Employee newEmployee) throws EmployeeAlreadyExistsException {
-//        return repository.save(newEmployee);
-//    }
 
     @ResponseBody
     @GetMapping("/snapshot")
     String snapshot()  {
-        return logic.GetSnapshot().toString();
+        return logics.get("city").GetSnapshot().toString();
     }
-
-//    @ResponseBody
-//    @PutMapping("/employees/{id}")
-//    Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) throws EmployeeAlreadyExistsException {
-//        return repository.saveOrSwitch(newEmployee,id);
-//    }
-//
-//    @ResponseBody
-//    @DeleteMapping("/employees/{id}")
-//    Employee deleteEmployee(@PathVariable Long id) {
-//        Employee employee = one(id);
-//        repository.delete(employee);
-//        return employee;
-//    }
 }
