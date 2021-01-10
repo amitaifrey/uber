@@ -126,6 +126,7 @@ public class Logic {
     public void UnlockRide(RideOffer offer) {
         storage.get(offer.getRide().getDepartureDate()).get(offer.getUuid()).Locked = false;
     }
+
     public void BroadcastLockRide(RideOffer offer) throws KeeperException, InterruptedException {
         for (var member : getMembers()) {
             if (member.equals(IP)) continue;
@@ -151,12 +152,25 @@ public class Logic {
 
     public PlanRideOffers GetSuitableRides(RideRequest req) {
         var plan = PlanRideOffers.newBuilder();
+        if (!storage.containsKey(req.getDepartureDate())) {
+            for (int i=0; i < req.getCitiesList().size()-1; i++) {
+                plan.addRideOffers(RideOffers.newBuilder().build());
+            }
+            return plan.build();
+        }
+
         for (int i=0; i < req.getCitiesList().size()-1; i++) {
             var start = req.getCitiesList().get(i);
             var end = req.getCitiesList().get(i + 1);
 
-            var offers = RideOffers.newBuilder().addAllOffers(storage.get(req.getDepartureDate()).values().stream()
-                    .filter(r -> IsRideSuitable(r, start, end)).map(r -> r.offer).collect(Collectors.toList()));
+            System.out.println(storage.get(req.getDepartureDate()).values());
+            var relevantOffers = storage.get(req.getDepartureDate()).values().stream()
+                    .filter(r -> IsRideSuitable(r, start, end)).collect(Collectors.toList());
+            var mapped = relevantOffers.stream().map(r -> {
+                System.out.println("MAP:\n" + r.toString());
+                return r.offer;
+            }).collect(Collectors.toList());
+            var offers = RideOffers.newBuilder().addAllOffers(mapped);
             plan.addRideOffers(offers);
         }
         return plan.build();
@@ -164,10 +178,10 @@ public class Logic {
 
     public boolean IsRideSuitable(RideStorage ride, String start, String end) {
         if ((!start.equals(ride.offer.getRide().getStartingPosition()) && !end.equals(ride.offer.getRide().getEndingPosition())) ||
-                ride.offer.getInfo().getVacancies() >= ride.infos.size()) return false;
+                ride.offer.getInfo().getVacancies() <= ride.infos.size()) return false;
 
         if (start.equals(ride.offer.getRide().getStartingPosition()) && end.equals(ride.offer.getRide().getEndingPosition()) &&
-                ride.offer.getInfo().getVacancies() < ride.infos.size()) return true;
+                ride.offer.getInfo().getVacancies() > ride.infos.size()) return true;
 
         var city1 = allCities.stream().filter(c->c.getName().equals(ride.offer.getRide().getStartingPosition())).collect(Collectors.toList()).get(0);
         var city2 = allCities.stream().filter(c->c.getName().equals(ride.offer.getRide().getEndingPosition())).collect(Collectors.toList()).get(0);
@@ -177,6 +191,7 @@ public class Logic {
             city0 = allCities.stream().filter(c->c.getName().equals(start)).collect(Collectors.toList()).get(0);
         }
 
+        // TODO test distances
         var distance = Math.abs(((city2.getX() - city1.getX())*(city1.getY() - city0.getY())) - ((city1.getX() - city0.getX())*(city2.getY() - city1.getY()))) /
                 Math.sqrt((city2.getX() - city1.getX())^2 + (city2.getY() - city1.getY())^2);
 
@@ -191,13 +206,14 @@ public class Logic {
 
         for (var city : allCities) {
             var leader = getLeaderIPByName(city.getName());
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(leader).usePlaintext().build();
+            ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
             var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
             var planRequest = RidePlanRequest.newBuilder().setRequest(req).setCity(city.getName()).build();
             var plan_offers = blockingStub.requestRide(planRequest);
             for (int i=0; i < req.getCitiesList().size()-1; i++) {
                 var old_offers = final_offers.get(i);
-                var new_offers = old_offers.toBuilder().mergeFrom(plan_offers.getRideOffersList().get(i)).build();
+                var thisOffers = plan_offers.getRideOffersList();
+                var new_offers = old_offers.toBuilder().mergeFrom(thisOffers.get(i)).build();
                 final_offers.set(i, new_offers);
             }
         }
@@ -210,6 +226,7 @@ public class Logic {
             var plan_offers = GetRequestOffers(req);
             var wanted = RideOffers.newBuilder();
 
+            // TODO select unique rides
             for (var offers : plan_offers.getRideOffersList()) {
                 if(offers.getOffersList().size() == 0) return "";
                 Random rand = new Random();
@@ -219,7 +236,7 @@ public class Logic {
 
             for (var ride : rides.getOffersList()) {
                 var leader = getLeaderIPByName(ride.getRide().getStartingPosition());
-                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader).usePlaintext().build();
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
                 if (!blockingStub.lockRide(ride).getResult()) return "";
             }
@@ -227,7 +244,7 @@ public class Logic {
             var uuid = UUID.randomUUID().toString();
             for (var ride : rides.getOffersList()) {
                 var leader = getLeaderIPByName(ride.getRide().getStartingPosition());
-                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader).usePlaintext().build();
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
                 var commit = CommitRequest.newBuilder().setInfo(generated.CommitInfo.newBuilder().
                         setId(uuid).setPerson(req.getPerson())).setOffer(ride).build();
@@ -259,7 +276,7 @@ public class Logic {
         try {
             for (var city : allCities) {
                 var leader = getLeaderIPByName(city.getName());
-                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader).usePlaintext().build();
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
                 var citySnapshot = blockingStub.getCitySnapshot(city);
                 snapshot.addSnapshots(citySnapshot);

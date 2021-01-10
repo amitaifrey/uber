@@ -30,7 +30,7 @@ public class UberController {
             System.out.println(e);
         }
         var rideOffer = builder.build();
-        return logics.get("city").NewRide(rideOffer).toString();
+        return logics.get(rideOffer.getRide().getStartingPosition()).NewRide(rideOffer).toString();
     }
 
     @PostMapping("/ride/request")
@@ -43,12 +43,12 @@ public class UberController {
             System.out.println(e);
         }
         var request = builder.build();
-        return logics.get("city").PlanRide(request);
+        return logics.get("city1").PlanRide(request);
     }
 
     @ResponseBody
     @GetMapping("/snapshot")
     String snapshot()  {
-        return logics.get("city").GetSnapshot().toString();
+        return logics.get("city1").GetSnapshot().toString();
     }
 }
