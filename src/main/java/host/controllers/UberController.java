@@ -6,8 +6,8 @@ import org.apache.zookeeper.KeeperException;
 import org.springframework.web.bind.annotation.*;
 import generated.RideOffer;
 import generated.RideRequest;
-
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,6 +30,10 @@ public class UberController {
             System.out.println(e);
         }
         var rideOffer = builder.build();
+
+        if (!logics.containsKey(rideOffer.getRide().getStartingPosition())) {
+            return logics.values().stream().collect(Collectors.toList()).get(0).NewRemoteRide(rideOffer).toString();
+        }
         return logics.get(rideOffer.getRide().getStartingPosition()).NewRide(rideOffer).toString();
     }
 
@@ -43,12 +47,12 @@ public class UberController {
             System.out.println(e);
         }
         var request = builder.build();
-        return logics.get("city1").PlanRide(request);
+        return logics.values().stream().collect(Collectors.toList()).get(0).PlanRide(request);
     }
 
     @ResponseBody
     @GetMapping("/snapshot")
     String snapshot()  {
-        return logics.get("city1").GetSnapshot().toString();
+        return logics.values().stream().collect(Collectors.toList()).get(0).GetSnapshot().toString();
     }
 }

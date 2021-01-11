@@ -7,6 +7,7 @@ import generated.CommitRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import generated.CommitInfo;
 import generated.RideOffer;
 import generated.City;
@@ -74,27 +75,36 @@ public class Logic {
     }
 
     public RideOffer NewRide(RideOffer offer) throws KeeperException, InterruptedException {
-        if (!storage.containsKey(offer.getRide().getDepartureDate())) {
-            storage.put(offer.getRide().getDepartureDate(), new HashMap<String, RideStorage>());
-        }
         var uuid = UUID.randomUUID().toString();
         offer = offer.toBuilder().setUuid(uuid).build();
         AddRideToStorage(offer);
-
         BroadcastNewRide(offer);
         return offer;
+    }
+
+    public RideOffer NewRemoteRide(RideOffer offer) throws KeeperException, InterruptedException {
+        var leader = getLeaderIPByName(offer.getRide().getStartingPosition());
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
+        var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
+        var result = blockingStub.addRemoteRide(offer);
+        return result;
     }
 
     public void BroadcastNewRide(RideOffer offer) throws KeeperException, InterruptedException {
         for (var member : getMembers()) {
             if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member).usePlaintext().build();
+            ManagedChannel channel = ManagedChannelBuilder.forTarget(member+":8980").usePlaintext().build();
             var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
             blockingStub.addRideOffer(offer);
+            channel.shutdown();
         }
     }
 
     public void AddRideToStorage(RideOffer offer) {
+        if (!storage.containsKey(offer.getRide().getDepartureDate())) {
+            storage.put(offer.getRide().getDepartureDate(), new HashMap<String, RideStorage>());
+        }
+
         storage.get(offer.getRide().getDepartureDate()).put(offer.getUuid(), new RideStorage(offer));
     }
 
@@ -130,18 +140,20 @@ public class Logic {
     public void BroadcastLockRide(RideOffer offer) throws KeeperException, InterruptedException {
         for (var member : getMembers()) {
             if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member).usePlaintext().build();
+            ManagedChannel channel = ManagedChannelBuilder.forTarget(member+":8980").usePlaintext().build();
             var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
             blockingStub.lockRide(offer);
+            channel.shutdown();
         }
     }
 
     public void BroadcastCommitRide(CommitRequest req) throws KeeperException, InterruptedException {
         for (var member : getMembers()) {
             if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member).usePlaintext().build();
+            ManagedChannel channel = ManagedChannelBuilder.forTarget(member+":8980").usePlaintext().build();
             var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
             blockingStub.commitRide(req);
+            channel.shutdown();
         }
     }
 
@@ -216,39 +228,80 @@ public class Logic {
                 var new_offers = old_offers.toBuilder().mergeFrom(thisOffers.get(i)).build();
                 final_offers.set(i, new_offers);
             }
+            channel.shutdown();
         }
 
         return PlanRideOffers.newBuilder().addAllRideOffers(final_offers).build();
     }
 
+    public List<List<Integer>> cartesian(List<Integer> lists) {
+        if (lists.size() == 1) {
+            var idxs = IntStream.range(0, lists.get(0)).boxed().collect(Collectors.toList());
+            return new LinkedList<>() {{ add(idxs); }} ;
+        }
+
+        var result = new LinkedList<List<Integer>>();
+        for(int i: IntStream.range(0, lists.get(0)).boxed().collect(Collectors.toList())) {
+            var idxs = cartesian(lists.subList(1,lists.size()));
+            for (var idx : idxs) {
+                idx.add(0, i);
+                result.add(idx);
+            }
+        }
+        return result;
+    }
+
+    public RideOffers GetValidOffers(PlanRideOffers planOffers) {
+        var perms = cartesian(planOffers.getRideOffersList().stream().map(o -> o.getOffersList().size()).collect(Collectors.toList()));
+        Collections.shuffle(perms);
+
+        for (var perm : perms) {
+            var offers = new HashMap<String, RideOffer>();
+            for (int i = 0; i < perm.size(); i++) {
+                var offer = planOffers.getRideOffersList().get(i).getOffersList().get(perm.get(i));
+                if (offers.containsKey(offer.getUuid())) break;
+                offers.put(offer.getUuid(), offer);
+            }
+            if (offers.size() == perm.size()) return RideOffers.newBuilder().addAllOffers(offers.values()).build();
+        }
+
+        return null;
+    }
+
     public String PlanRide(RideRequest req) {
         try {
-            var plan_offers = GetRequestOffers(req);
+            var planOffers = GetRequestOffers(req);
             var wanted = RideOffers.newBuilder();
 
-            // TODO select unique rides
-            for (var offers : plan_offers.getRideOffersList()) {
-                if(offers.getOffersList().size() == 0) return "";
-                Random rand = new Random();
-                wanted.addOffers(offers.getOffersList().get(rand.nextInt(offers.getOffersList().size())));
-            }
-            var rides = wanted.build();
+            if(planOffers.getRideOffersList().stream().anyMatch(o -> o.getOffersList().size() == 0)) return "";
+            var rides = GetValidOffers(planOffers);
+            if (null == rides) return "";
 
-            for (var ride : rides.getOffersList()) {
+            // Sort to use Dining Philosopher's Algorithm (thank you Dijkstra)
+            for (var ride : rides.getOffersList().stream().sorted(Comparator.comparing(RideOffer::getUuid)).collect(Collectors.toList())) {
                 var leader = getLeaderIPByName(ride.getRide().getStartingPosition());
                 ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
-                if (!blockingStub.lockRide(ride).getResult()) return "";
+                if (!blockingStub.lockRide(ride).getResult()) {
+                    channel.shutdown();
+                    return "";
+                }
+                channel.shutdown();
             }
 
             var uuid = UUID.randomUUID().toString();
-            for (var ride : rides.getOffersList()) {
+            for (int i = 0; i< rides.getOffersList().size(); i++) {
+                var ride = rides.getOffersList().get(i);
+                var start = req.getCitiesList().get(i);
+                var end = req.getCitiesList().get(i + 1);
                 var leader = getLeaderIPByName(ride.getRide().getStartingPosition());
                 ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
                 var commit = CommitRequest.newBuilder().setInfo(generated.CommitInfo.newBuilder().
-                        setId(uuid).setPerson(req.getPerson())).setOffer(ride).build();
+                        setId(uuid).setPerson(req.getPerson()).setStartingPosition(start).setEndingPosition(end).build())
+                        .setOffer(ride).build();
                 blockingStub.commitRide(commit);
+                channel.shutdown();
             }
 
             return uuid;
@@ -278,8 +331,10 @@ public class Logic {
                 var leader = getLeaderIPByName(city.getName());
                 ManagedChannel channel = ManagedChannelBuilder.forTarget(leader+":8980").usePlaintext().build();
                 var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
+                System.out.println(leader);
                 var citySnapshot = blockingStub.getCitySnapshot(city);
                 snapshot.addSnapshots(citySnapshot);
+                channel.shutdown();
             }
         } catch (Exception e) {
             e.printStackTrace();

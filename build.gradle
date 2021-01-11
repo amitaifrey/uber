@@ -60,3 +60,6 @@ sourceSets {
         }
     }
 }
+
+apply plugin: 'application'
+mainClassName = 'host.main'

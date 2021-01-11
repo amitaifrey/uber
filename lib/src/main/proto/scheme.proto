@@ -15,6 +15,7 @@ service UberService {
   rpc CommitRide(CommitRequest) returns (Result) {}
 
   // cluster ops
+  rpc AddRemoteRide(RideOffer) returns (RideOffer) {}
   rpc RequestRide(RidePlanRequest) returns (PlanRideOffers) {}
   rpc GetCitySnapshot(City) returns (CitySnapshot) {}
 }
@@ -76,6 +77,8 @@ message CommitRequest {
 message CommitInfo {
   Person person = 1;
   string id = 2;
+  string starting_position = 3;
+  string ending_position = 4;
 }
 
 message RideOfferSnapshot {
@@ -96,16 +99,11 @@ message Snapshot {
 
 message Configuration {
   repeated City all_cities = 1;
-  repeated MyCity my_cities = 2;
+  repeated string my_cities = 2;
 }
 
 message City {
   string name = 1;
   int32 x = 2;
   int32 y = 3;
-}
-
-message MyCity {
-  City city = 1;
-  int32 port = 2;
 }

@@ -1,0 +1,20 @@
+{
+  "all_cities": [
+    {
+      "name": "city1",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "name": "city2",
+      "x": 0,
+      "y": 6
+    },
+    {
+      "name": "city3",
+      "x": 6,
+      "y": 6
+    }
+  ],
+  "my_cities": ["city1", "city2", "city3"]
+}

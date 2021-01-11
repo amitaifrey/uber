@@ -29,9 +29,21 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
                 logic.BroadcastNewRide(offer);
             }
         } catch (Exception ignored) {}
+        responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void addRemoteRide(RideOffer offer, StreamObserver<RideOffer> responseObserver) {
+        var logic = logics.get(offer.getRide().getStartingPosition());
+        try {
+            var result = logic.NewRide(offer);
+            responseObserver.onNext(result);
+        } catch (Exception ignored) {}
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void lockRide(RideOffer offer, StreamObserver<Result> responseObserver) {
         var logic = logics.get(offer.getRide().getStartingPosition());
         boolean result = false;
