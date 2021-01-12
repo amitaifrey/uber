@@ -213,6 +213,68 @@ public final class UberServiceGrpc {
     return getGetCitySnapshotMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<generated.StateRequest,
+      com.google.protobuf.Empty> getRequestStateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "RequestState",
+      requestType = generated.StateRequest.class,
+      responseType = com.google.protobuf.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.StateRequest,
+      com.google.protobuf.Empty> getRequestStateMethod() {
+    io.grpc.MethodDescriptor<generated.StateRequest, com.google.protobuf.Empty> getRequestStateMethod;
+    if ((getRequestStateMethod = UberServiceGrpc.getRequestStateMethod) == null) {
+      synchronized (UberServiceGrpc.class) {
+        if ((getRequestStateMethod = UberServiceGrpc.getRequestStateMethod) == null) {
+          UberServiceGrpc.getRequestStateMethod = getRequestStateMethod =
+              io.grpc.MethodDescriptor.<generated.StateRequest, com.google.protobuf.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RequestState"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.StateRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new UberServiceMethodDescriptorSupplier("RequestState"))
+              .build();
+        }
+      }
+    }
+    return getRequestStateMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<generated.State,
+      com.google.protobuf.Empty> getSetStateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "SetState",
+      requestType = generated.State.class,
+      responseType = com.google.protobuf.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<generated.State,
+      com.google.protobuf.Empty> getSetStateMethod() {
+    io.grpc.MethodDescriptor<generated.State, com.google.protobuf.Empty> getSetStateMethod;
+    if ((getSetStateMethod = UberServiceGrpc.getSetStateMethod) == null) {
+      synchronized (UberServiceGrpc.class) {
+        if ((getSetStateMethod = UberServiceGrpc.getSetStateMethod) == null) {
+          UberServiceGrpc.getSetStateMethod = getSetStateMethod =
+              io.grpc.MethodDescriptor.<generated.State, com.google.protobuf.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SetState"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  generated.State.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new UberServiceMethodDescriptorSupplier("SetState"))
+              .build();
+        }
+      }
+    }
+    return getSetStateMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -309,6 +371,20 @@ public final class UberServiceGrpc {
       asyncUnimplementedUnaryCall(getGetCitySnapshotMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void requestState(generated.StateRequest request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(getRequestStateMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void setState(generated.State request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(getSetStateMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -353,6 +429,20 @@ public final class UberServiceGrpc {
                 generated.City,
                 generated.CitySnapshot>(
                   this, METHODID_GET_CITY_SNAPSHOT)))
+          .addMethod(
+            getRequestStateMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                generated.StateRequest,
+                com.google.protobuf.Empty>(
+                  this, METHODID_REQUEST_STATE)))
+          .addMethod(
+            getSetStateMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                generated.State,
+                com.google.protobuf.Empty>(
+                  this, METHODID_SET_STATE)))
           .build();
     }
   }
@@ -424,6 +514,22 @@ public final class UberServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getGetCitySnapshotMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void requestState(generated.StateRequest request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getRequestStateMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void setState(generated.State request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getSetStateMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -486,6 +592,20 @@ public final class UberServiceGrpc {
     public generated.CitySnapshot getCitySnapshot(generated.City request) {
       return blockingUnaryCall(
           getChannel(), getGetCitySnapshotMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.google.protobuf.Empty requestState(generated.StateRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getRequestStateMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.google.protobuf.Empty setState(generated.State request) {
+      return blockingUnaryCall(
+          getChannel(), getSetStateMethod(), getCallOptions(), request);
     }
   }
 
@@ -556,6 +676,22 @@ public final class UberServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getGetCitySnapshotMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> requestState(
+        generated.StateRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getRequestStateMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> setState(
+        generated.State request) {
+      return futureUnaryCall(
+          getChannel().newCall(getSetStateMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD_RIDE_OFFER = 0;
@@ -564,6 +700,8 @@ public final class UberServiceGrpc {
   private static final int METHODID_ADD_REMOTE_RIDE = 3;
   private static final int METHODID_REQUEST_RIDE = 4;
   private static final int METHODID_GET_CITY_SNAPSHOT = 5;
+  private static final int METHODID_REQUEST_STATE = 6;
+  private static final int METHODID_SET_STATE = 7;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -605,6 +743,14 @@ public final class UberServiceGrpc {
         case METHODID_GET_CITY_SNAPSHOT:
           serviceImpl.getCitySnapshot((generated.City) request,
               (io.grpc.stub.StreamObserver<generated.CitySnapshot>) responseObserver);
+          break;
+        case METHODID_REQUEST_STATE:
+          serviceImpl.requestState((generated.StateRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
+          break;
+        case METHODID_SET_STATE:
+          serviceImpl.setState((generated.State) request,
+              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -673,6 +819,8 @@ public final class UberServiceGrpc {
               .addMethod(getAddRemoteRideMethod())
               .addMethod(getRequestRideMethod())
               .addMethod(getGetCitySnapshotMethod())
+              .addMethod(getRequestStateMethod())
+              .addMethod(getSetStateMethod())
               .build();
         }
       }

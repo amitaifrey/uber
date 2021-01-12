@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  uber1:
+    image: uber
+    build: .
+    ports:
+      - "10001:80/tcp"
+    environment:
+      - CONF_FILE=/home/conf/conf1.json
+  uber2:
+    image: uber
+    depends_on:
+      - uber1
+    ports:
+      - "10002:80/tcp"
+    environment:
+      - CONF_FILE=/home/conf/conf2.json
+  uber3:
+    image: uber
+    depends_on:
+      - uber1
+    ports:
+      - "10003:80/tcp"
+    environment:
+      - CONF_FILE=/home/conf/conf3.json
+  uber4:
+    image: uber
+    depends_on:
+      - uber1
+    ports:
+      - "10004:80/tcp"
+    environment:
+      - CONF_FILE=/home/conf/conf4.json
+  uber5:
+    image: uber
+    depends_on:
+      - uber1
+    ports:
+      - "10005:80/tcp"
+    environment:
+      - CONF_FILE=/home/conf/conf5.json

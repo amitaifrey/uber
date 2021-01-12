@@ -18,12 +18,24 @@ service UberService {
   rpc AddRemoteRide(RideOffer) returns (RideOffer) {}
   rpc RequestRide(RidePlanRequest) returns (PlanRideOffers) {}
   rpc GetCitySnapshot(City) returns (CitySnapshot) {}
+  rpc RequestState(StateRequest) returns (google.protobuf.Empty) {}
+  rpc SetState(State) returns (google.protobuf.Empty) {}
 }
 
 // A: []
 
 message Result {
   bool result = 1;
+}
+
+message State {
+  City city = 1;
+  bytes data = 2;
+}
+
+message StateRequest {
+  City city = 1;
+  string ip = 2;
 }
 
 message Person {

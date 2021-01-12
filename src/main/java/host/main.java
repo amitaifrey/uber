@@ -10,6 +10,7 @@ import generated.Configuration;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,14 +22,10 @@ public class main {
     public static HashMap<String, Logic> logics;
 
     public static void main(String[] argv) {
-        // TODO create timeouts and retries
-        // TODO add lock to each logic?
-        // TODO docker-compose + ensemble?
+        // TODO fix ride request bug
+        // TODO ensemble
         try {
-            ZKManagerImpl conn = new ZKManagerImpl("172.27.111.120:2181"); // zk default
-            TimeUnit.SECONDS.sleep(10);
-
-            String text = Files.readString(Paths.get(argv[0]));
+            String text = Files.readString(Path.of(System.getenv("CONF_FILE")));
             var conf = Configuration.newBuilder();
 
             try {
@@ -39,16 +36,22 @@ public class main {
                 return;
             }
 
+            ZKManagerImpl conn = new ZKManagerImpl(System.getenv("ZOOKEEPER_IP") + ":2181"); // zk default
+            TimeUnit.SECONDS.sleep(10);
+
             logics = new HashMap<String, Logic>();
             for (var cityName : conf.getMyCitiesList()) {
                 var city = conf.getAllCitiesList().stream().filter(c -> c.getName().equals(cityName)).collect(Collectors.toList()).get(0);
                 System.out.println(Arrays.toString(InetAddress.getLocalHost().getAddress()));
-                var logic = new Logic(conn, conf.getAllCitiesList(), city, Inet4Address.getLocalHost().getHostAddress());
+                var logic = new Logic(conn, conf.getAllCitiesList(), city, Inet4Address.getLocalHost().getHostAddress(), 3, 30);
                 logics.put(cityName, logic);
             }
 
             UberRPCServer server = new UberRPCServer(8980, logics);
             server.start();
+            for (var logic : logics.values()) {
+                logic.Start();
+            }
             SpringApplication.run(main.class);
         } catch (Exception e) {
             System.out.println(e);

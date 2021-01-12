@@ -20,6 +20,16 @@ public final class UberProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_uber_Result_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_uber_State_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_uber_State_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_uber_StateRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_uber_StateRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_uber_Person_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -104,44 +114,50 @@ public final class UberProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\014scheme.proto\022\004uber\032\033google/protobuf/em" +
-      "pty.proto\"\030\n\006Result\022\016\n\006result\030\001 \001(\010\"E\n\006P" +
-      "erson\022\022\n\nfirst_name\030\001 \001(\t\022\021\n\tlast_name\030\002" +
-      " \001(\t\022\024\n\014phone_number\030\003 \001(\t\"R\n\004Ride\022\031\n\021st" +
-      "arting_position\030\001 \001(\t\022\027\n\017ending_position" +
-      "\030\002 \001(\t\022\026\n\016departure_date\030\003 \001(\t\"?\n\rRideOf" +
-      "ferInfo\022\021\n\tvacancies\030\001 \001(\005\022\033\n\023permitted_" +
-      "deviation\030\002 \001(\005\"t\n\tRideOffer\022\034\n\006person\030\001" +
-      " \001(\0132\014.uber.Person\022\030\n\004ride\030\002 \001(\0132\n.uber." +
-      "Ride\022!\n\004info\030\003 \001(\0132\023.uber.RideOfferInfo\022" +
-      "\014\n\004uuid\030\004 \001(\t\"S\n\013RideRequest\022\034\n\006person\030\001" +
-      " \001(\0132\014.uber.Person\022\026\n\016departure_date\030\002 \001" +
-      "(\t\022\016\n\006cities\030\003 \003(\t\"C\n\017RidePlanRequest\022\"\n" +
-      "\007request\030\001 \001(\0132\021.uber.RideRequest\022\014\n\004cit" +
-      "y\030\002 \001(\t\"-\n\nRideOffers\022\037\n\006offers\030\001 \003(\0132\017." +
-      "uber.RideOffer\"7\n\016PlanRideOffers\022%\n\013ride" +
-      "_offers\030\001 \003(\0132\020.uber.RideOffers\"O\n\rCommi" +
-      "tRequest\022\036\n\005offer\030\001 \001(\0132\017.uber.RideOffer" +
-      "\022\036\n\004info\030\002 \001(\0132\020.uber.CommitInfo\"j\n\nComm" +
-      "itInfo\022\034\n\006person\030\001 \001(\0132\014.uber.Person\022\n\n\002" +
-      "id\030\002 \001(\t\022\031\n\021starting_position\030\003 \001(\t\022\027\n\017e" +
-      "nding_position\030\004 \001(\t\"T\n\021RideOfferSnapsho" +
-      "t\022\036\n\005offer\030\001 \001(\0132\017.uber.RideOffer\022\037\n\005inf" +
-      "os\030\002 \003(\0132\020.uber.CommitInfo\"D\n\014CitySnapsh" +
-      "ot\022\014\n\004name\030\001 \001(\t\022&\n\005rides\030\002 \003(\0132\027.uber.R" +
-      "ideOfferSnapshot\"1\n\010Snapshot\022%\n\tsnapshot" +
-      "s\030\001 \003(\0132\022.uber.CitySnapshot\"B\n\rConfigura" +
-      "tion\022\036\n\nall_cities\030\001 \003(\0132\n.uber.City\022\021\n\t" +
-      "my_cities\030\002 \003(\t\"*\n\004City\022\014\n\004name\030\001 \001(\t\022\t\n" +
-      "\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\0052\320\002\n\013UberService\0229\n\014A" +
-      "ddRideOffer\022\017.uber.RideOffer\032\026.google.pr" +
-      "otobuf.Empty\"\000\022+\n\010LockRide\022\017.uber.RideOf" +
-      "fer\032\014.uber.Result\"\000\0221\n\nCommitRide\022\023.uber" +
-      ".CommitRequest\032\014.uber.Result\"\000\0223\n\rAddRem" +
-      "oteRide\022\017.uber.RideOffer\032\017.uber.RideOffe" +
-      "r\"\000\022<\n\013RequestRide\022\025.uber.RidePlanReques" +
-      "t\032\024.uber.PlanRideOffers\"\000\0223\n\017GetCitySnap" +
-      "shot\022\n.uber.City\032\022.uber.CitySnapshot\"\000B\036" +
-      "\n\tgeneratedB\tUberProtoP\001\242\002\003UBRb\006proto3"
+      "pty.proto\"\030\n\006Result\022\016\n\006result\030\001 \001(\010\"/\n\005S" +
+      "tate\022\030\n\004city\030\001 \001(\0132\n.uber.City\022\014\n\004data\030\002" +
+      " \001(\014\"4\n\014StateRequest\022\030\n\004city\030\001 \001(\0132\n.ube" +
+      "r.City\022\n\n\002ip\030\002 \001(\t\"E\n\006Person\022\022\n\nfirst_na" +
+      "me\030\001 \001(\t\022\021\n\tlast_name\030\002 \001(\t\022\024\n\014phone_num" +
+      "ber\030\003 \001(\t\"R\n\004Ride\022\031\n\021starting_position\030\001" +
+      " \001(\t\022\027\n\017ending_position\030\002 \001(\t\022\026\n\016departu" +
+      "re_date\030\003 \001(\t\"?\n\rRideOfferInfo\022\021\n\tvacanc" +
+      "ies\030\001 \001(\005\022\033\n\023permitted_deviation\030\002 \001(\005\"t" +
+      "\n\tRideOffer\022\034\n\006person\030\001 \001(\0132\014.uber.Perso" +
+      "n\022\030\n\004ride\030\002 \001(\0132\n.uber.Ride\022!\n\004info\030\003 \001(" +
+      "\0132\023.uber.RideOfferInfo\022\014\n\004uuid\030\004 \001(\t\"S\n\013" +
+      "RideRequest\022\034\n\006person\030\001 \001(\0132\014.uber.Perso" +
+      "n\022\026\n\016departure_date\030\002 \001(\t\022\016\n\006cities\030\003 \003(" +
+      "\t\"C\n\017RidePlanRequest\022\"\n\007request\030\001 \001(\0132\021." +
+      "uber.RideRequest\022\014\n\004city\030\002 \001(\t\"-\n\nRideOf" +
+      "fers\022\037\n\006offers\030\001 \003(\0132\017.uber.RideOffer\"7\n" +
+      "\016PlanRideOffers\022%\n\013ride_offers\030\001 \003(\0132\020.u" +
+      "ber.RideOffers\"O\n\rCommitRequest\022\036\n\005offer" +
+      "\030\001 \001(\0132\017.uber.RideOffer\022\036\n\004info\030\002 \001(\0132\020." +
+      "uber.CommitInfo\"j\n\nCommitInfo\022\034\n\006person\030" +
+      "\001 \001(\0132\014.uber.Person\022\n\n\002id\030\002 \001(\t\022\031\n\021start" +
+      "ing_position\030\003 \001(\t\022\027\n\017ending_position\030\004 " +
+      "\001(\t\"T\n\021RideOfferSnapshot\022\036\n\005offer\030\001 \001(\0132" +
+      "\017.uber.RideOffer\022\037\n\005infos\030\002 \003(\0132\020.uber.C" +
+      "ommitInfo\"D\n\014CitySnapshot\022\014\n\004name\030\001 \001(\t\022" +
+      "&\n\005rides\030\002 \003(\0132\027.uber.RideOfferSnapshot\"" +
+      "1\n\010Snapshot\022%\n\tsnapshots\030\001 \003(\0132\022.uber.Ci" +
+      "tySnapshot\"B\n\rConfiguration\022\036\n\nall_citie" +
+      "s\030\001 \003(\0132\n.uber.City\022\021\n\tmy_cities\030\002 \003(\t\"*" +
+      "\n\004City\022\014\n\004name\030\001 \001(\t\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 \001" +
+      "(\0052\301\003\n\013UberService\0229\n\014AddRideOffer\022\017.ube" +
+      "r.RideOffer\032\026.google.protobuf.Empty\"\000\022+\n" +
+      "\010LockRide\022\017.uber.RideOffer\032\014.uber.Result" +
+      "\"\000\0221\n\nCommitRide\022\023.uber.CommitRequest\032\014." +
+      "uber.Result\"\000\0223\n\rAddRemoteRide\022\017.uber.Ri" +
+      "deOffer\032\017.uber.RideOffer\"\000\022<\n\013RequestRid" +
+      "e\022\025.uber.RidePlanRequest\032\024.uber.PlanRide" +
+      "Offers\"\000\0223\n\017GetCitySnapshot\022\n.uber.City\032" +
+      "\022.uber.CitySnapshot\"\000\022<\n\014RequestState\022\022." +
+      "uber.StateRequest\032\026.google.protobuf.Empt" +
+      "y\"\000\0221\n\010SetState\022\013.uber.State\032\026.google.pr" +
+      "otobuf.Empty\"\000B\036\n\tgeneratedB\tUberProtoP\001" +
+      "\242\002\003UBRb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -154,92 +170,104 @@ public final class UberProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Result_descriptor,
         new java.lang.String[] { "Result", });
-    internal_static_uber_Person_descriptor =
+    internal_static_uber_State_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_uber_State_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_uber_State_descriptor,
+        new java.lang.String[] { "City", "Data", });
+    internal_static_uber_StateRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_uber_StateRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_uber_StateRequest_descriptor,
+        new java.lang.String[] { "City", "Ip", });
+    internal_static_uber_Person_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_uber_Person_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Person_descriptor,
         new java.lang.String[] { "FirstName", "LastName", "PhoneNumber", });
     internal_static_uber_Ride_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_uber_Ride_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Ride_descriptor,
         new java.lang.String[] { "StartingPosition", "EndingPosition", "DepartureDate", });
     internal_static_uber_RideOfferInfo_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_uber_RideOfferInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RideOfferInfo_descriptor,
         new java.lang.String[] { "Vacancies", "PermittedDeviation", });
     internal_static_uber_RideOffer_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_uber_RideOffer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RideOffer_descriptor,
         new java.lang.String[] { "Person", "Ride", "Info", "Uuid", });
     internal_static_uber_RideRequest_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_uber_RideRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RideRequest_descriptor,
         new java.lang.String[] { "Person", "DepartureDate", "Cities", });
     internal_static_uber_RidePlanRequest_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_uber_RidePlanRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RidePlanRequest_descriptor,
         new java.lang.String[] { "Request", "City", });
     internal_static_uber_RideOffers_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_uber_RideOffers_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RideOffers_descriptor,
         new java.lang.String[] { "Offers", });
     internal_static_uber_PlanRideOffers_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_uber_PlanRideOffers_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_PlanRideOffers_descriptor,
         new java.lang.String[] { "RideOffers", });
     internal_static_uber_CommitRequest_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_uber_CommitRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_CommitRequest_descriptor,
         new java.lang.String[] { "Offer", "Info", });
     internal_static_uber_CommitInfo_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_uber_CommitInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_CommitInfo_descriptor,
         new java.lang.String[] { "Person", "Id", "StartingPosition", "EndingPosition", });
     internal_static_uber_RideOfferSnapshot_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_uber_RideOfferSnapshot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_RideOfferSnapshot_descriptor,
         new java.lang.String[] { "Offer", "Infos", });
     internal_static_uber_CitySnapshot_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_uber_CitySnapshot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_CitySnapshot_descriptor,
         new java.lang.String[] { "Name", "Rides", });
     internal_static_uber_Snapshot_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_uber_Snapshot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Snapshot_descriptor,
         new java.lang.String[] { "Snapshots", });
     internal_static_uber_Configuration_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_uber_Configuration_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_Configuration_descriptor,
         new java.lang.String[] { "AllCities", "MyCities", });
     internal_static_uber_City_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_uber_City_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_uber_City_descriptor,

@@ -61,5 +61,11 @@ sourceSets {
     }
 }
 
+processResources {
+    filesMatching("**/application.properties") {
+        expand( project.properties )
+    }
+}
+
 apply plugin: 'application'
 mainClassName = 'host.main'

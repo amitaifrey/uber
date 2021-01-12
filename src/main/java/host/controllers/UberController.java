@@ -3,9 +3,12 @@ import com.google.protobuf.util.JsonFormat;
 import host.main;
 import logic.Logic;
 import org.apache.zookeeper.KeeperException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import generated.RideOffer;
 import generated.RideRequest;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -27,14 +30,19 @@ public class UberController {
             JsonFormat.parser().ignoringUnknownFields().merge(offer, builder);
         } catch(Exception e) {
             System.out.println(":(");
-            System.out.println(e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Format is incorrect", e);
         }
         var rideOffer = builder.build();
 
         if (!logics.containsKey(rideOffer.getRide().getStartingPosition())) {
             return logics.values().stream().collect(Collectors.toList()).get(0).NewRemoteRide(rideOffer).toString();
         }
-        return logics.get(rideOffer.getRide().getStartingPosition()).NewRide(rideOffer).toString();
+        var result = logics.get(rideOffer.getRide().getStartingPosition()).NewRide(rideOffer).toString();
+        if (result.equals("")) {
+            System.out.println(":( #2");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not register new ride");
+        }
+        return result;
     }
 
     @PostMapping("/ride/request")
@@ -43,16 +51,23 @@ public class UberController {
         try {
             JsonFormat.parser().ignoringUnknownFields().merge(req, builder);
         } catch(Exception e) {
-            System.out.println(":(");
-            System.out.println(e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Format is incorrect", e);
         }
         var request = builder.build();
-        return logics.values().stream().collect(Collectors.toList()).get(0).PlanRide(request);
+        var result =  logics.values().stream().collect(Collectors.toList()).get(0).PlanRide(request);
+        if (result.equals("")) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not register new request");
+        }
+        return result;
     }
 
     @ResponseBody
     @GetMapping("/snapshot")
     String snapshot()  {
-        return logics.values().stream().collect(Collectors.toList()).get(0).GetSnapshot().toString();
+        var result = logics.values().stream().collect(Collectors.toList()).get(0).GetSnapshot().toString();
+        if (result.equals("")) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not get system snapshot");
+        }
+        return result;
     }
 }

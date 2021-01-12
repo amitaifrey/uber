@@ -10,6 +10,7 @@ import generated.CommitRequest;
 import generated.City;
 import generated.RidePlanRequest;
 import generated.PlanRideOffers;
+import generated.State;
 import java.util.HashMap;
 
 public class UberService extends UberServiceGrpc.UberServiceImplBase {
@@ -46,13 +47,7 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
     @Override
     public void lockRide(RideOffer offer, StreamObserver<Result> responseObserver) {
         var logic = logics.get(offer.getRide().getStartingPosition());
-        boolean result = false;
-        if (logic.IsRideOfferExists(offer)) {
-            if (!logic.IsLocked(offer) && logic.HasVacancies(offer)) {
-                logic.LockRide(offer);
-                result = true;
-            }
-        }
+        boolean result = logic.LockRide(offer);
 
         try {
             if (result) logic.BroadcastLockRide(offer);
@@ -65,13 +60,7 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
     @Override
     public void commitRide(CommitRequest req, StreamObserver<Result> responseObserver) {
         var logic = logics.get(req.getOffer().getRide().getStartingPosition());
-        boolean result = false;
-        if (logic.IsRideOfferExists(req.getOffer())) {
-            if (logic.IsLocked(req.getOffer())) {
-                logic.CommitRide(req);
-                result = true;
-            }
-        }
+        boolean result = logic.CommitRide(req);
 
         try {
             if (result) logic.BroadcastCommitRide(req);
@@ -93,6 +82,21 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
     public void getCitySnapshot(City city, StreamObserver<CitySnapshot> responseObserver) {
         var logic = logics.get(city.getName());
         responseObserver.onNext(logic.GetCitySnapshot());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void requestState(generated.StateRequest req, StreamObserver<Empty> responseObserver) {
+        var logic = logics.get(req.getCity().getName());
+        logic.SendState(req);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    public void setState(State state, StreamObserver<Empty> responseObserver) {
+        var logic = logics.get(state.getCity().getName());
+        logic.SetState(state.getData());
+        responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
 }
