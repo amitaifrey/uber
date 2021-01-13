@@ -30,7 +30,7 @@ public class UberController {
             JsonFormat.parser().ignoringUnknownFields().merge(offer, builder);
         } catch(Exception e) {
             System.out.println(":(");
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Format is incorrect", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Format is incorrect", e);
         }
         var rideOffer = builder.build();
 
@@ -39,7 +39,6 @@ public class UberController {
         }
         var result = logics.get(rideOffer.getRide().getStartingPosition()).NewRide(rideOffer).toString();
         if (result.equals("")) {
-            System.out.println(":( #2");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not register new ride");
         }
         return result;
@@ -51,7 +50,7 @@ public class UberController {
         try {
             JsonFormat.parser().ignoringUnknownFields().merge(req, builder);
         } catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Format is incorrect", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Format is incorrect", e);
         }
         var request = builder.build();
         var result =  logics.values().stream().collect(Collectors.toList()).get(0).PlanRide(request);
@@ -66,7 +65,7 @@ public class UberController {
     String snapshot()  {
         var result = logics.values().stream().collect(Collectors.toList()).get(0).GetSnapshot().toString();
         if (result.equals("")) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not get system snapshot");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get system snapshot");
         }
         return result;
     }

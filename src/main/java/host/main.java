@@ -11,7 +11,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +21,6 @@ public class main {
     public static HashMap<String, Logic> logics;
 
     public static void main(String[] argv) {
-        // TODO fix ride request bug
         // TODO ensemble
         try {
             String text = Files.readString(Path.of(System.getenv("CONF_FILE")));

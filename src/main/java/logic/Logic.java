@@ -70,7 +70,6 @@ public class Logic {
     public List<String> getMembers() throws KeeperException, InterruptedException {
         var children = conn.getChildren("/" + myCity.getName());
         return children.stream().map(path -> {
-            System.out.println("Path: " + path);
             try {
                 return new String(conn.getZNodeData("/" + myCity.getName() + "/" + path, false), StandardCharsets.UTF_8);
             } catch (Exception e) {
@@ -132,10 +131,6 @@ public class Logic {
         return storage.get(offer.getRide().getDepartureDate()).containsKey(offer.getUuid());
     }
 
-    public RideStorage GetRideStorage(RideOffer offer) {
-        return storage.get(offer.getRide().getDepartureDate()).get(offer.getUuid());
-    }
-
     public boolean HasVacancies(RideOffer offer) {
         var rideStorage = storage.get(offer.getRide().getDepartureDate()).get(offer.getUuid());
         return rideStorage.infos.size() < rideStorage.offer.getInfo().getVacancies();
@@ -147,7 +142,6 @@ public class Logic {
     }
 
     public boolean LockRide(RideOffer offer) {
-        System.out.println("Lock");
         lock.lock();
         if (IsRideOfferExists(offer)) {
             if (!IsLocked(offer) && HasVacancies(offer)) {
@@ -186,7 +180,6 @@ public class Logic {
     }
 
     public boolean CommitRide(CommitRequest req) {
-        System.out.println("Commit");
         lock.lock();
         if (IsRideOfferExists(req.getOffer())) {
             if (IsLocked(req.getOffer())) {
@@ -217,10 +210,7 @@ public class Logic {
             System.out.println(storage.get(req.getDepartureDate()).values());
             var relevantOffers = storage.get(req.getDepartureDate()).values().stream()
                     .filter(r -> IsRideSuitable(r, start, end)).collect(Collectors.toList());
-            var mapped = relevantOffers.stream().map(r -> {
-                System.out.println("MAP:\n" + r.toString());
-                return r.offer;
-            }).collect(Collectors.toList());
+            var mapped = relevantOffers.stream().map(r -> r.offer).collect(Collectors.toList());
             var offers = RideOffers.newBuilder().addAllOffers(mapped);
             plan.addRideOffers(offers);
         }
@@ -242,9 +232,8 @@ public class Logic {
             city0 = allCities.stream().filter(c -> c.getName().equals(start)).collect(Collectors.toList()).get(0);
         }
 
-        // TODO test distances
         var distance = Math.abs(((city2.getX() - city1.getX()) * (city1.getY() - city0.getY())) - ((city1.getX() - city0.getX()) * (city2.getY() - city1.getY()))) /
-                Math.sqrt((city2.getX() - city1.getX()) ^ 2 + (city2.getY() - city1.getY()) ^ 2);
+                Math.sqrt(Math.pow(city2.getX() - city1.getX(), 2) + Math.pow(city2.getY() - city1.getY(), 2));
 
         return distance <= ride.offer.getInfo().getPermittedDeviation();
     }
@@ -283,10 +272,12 @@ public class Logic {
 
     public List<List<Integer>> cartesian(List<Integer> lists) {
         if (lists.size() == 1) {
-            var idxs = IntStream.range(0, lists.get(0)).boxed().collect(Collectors.toList());
-            return new LinkedList<>() {{
-                add(idxs);
-            }};
+            var list = new LinkedList<List<Integer>>();
+            for (int i = 0; i < lists.get(0); i++ ){
+                int finalI = i;
+                list.add(new LinkedList<Integer>() {{add(finalI);}});
+            }
+            return list;
         }
 
         var result = new LinkedList<List<Integer>>();
@@ -305,14 +296,17 @@ public class Logic {
         Collections.shuffle(perms);
 
         for (var perm : perms) {
-            var offers = new HashMap<String, RideOffer>();
+            var offersSet = new HashSet<String>();
+            var offers = new LinkedList<RideOffer>();
             for (int i = 0; i < perm.size(); i++) {
                 var offer = planOffers.getRideOffersList().get(i).getOffersList().get(perm.get(i));
-                if (offers.containsKey(offer.getUuid())) break;
-                offers.put(offer.getUuid(), offer);
+                if (offersSet.contains(offer.getUuid())) break;
+                offers.add(offer);
+                offersSet.add(offer.getUuid());
             }
-            if (offers.size() == perm.size()) return RideOffers.newBuilder().addAllOffers(offers.values()).build();
+            if (offers.size() == perm.size()) return RideOffers.newBuilder().addAllOffers(offers).build();
         }
+
 
         return null;
     }
@@ -320,7 +314,6 @@ public class Logic {
     public String PlanRide(RideRequest req) {
         try {
             var planOffers = GetRequestOffers(req);
-            var wanted = RideOffers.newBuilder();
 
             if (planOffers.getRideOffersList().stream().anyMatch(o -> o.getOffersList().size() == 0)) return "";
             var rides = GetValidOffers(planOffers);

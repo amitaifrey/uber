@@ -93,6 +93,7 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
     public void setState(State state, StreamObserver<Empty> responseObserver) {
         var logic = logics.get(state.getCity().getName());
         logic.SetState(state.getData());
