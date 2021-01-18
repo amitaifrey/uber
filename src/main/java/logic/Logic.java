@@ -76,7 +76,7 @@ public class Logic {
                 e.printStackTrace();
             }
             return null;
-        }).collect(Collectors.toList());
+        }).sorted().collect(Collectors.toList());
     }
 
     public RideOffer NewRide(RideOffer offer) throws KeeperException, InterruptedException {
@@ -104,14 +104,21 @@ public class Logic {
     }
 
     public void BroadcastNewRide(RideOffer offer) throws KeeperException, InterruptedException {
-        for (var member : getMembers()) {
-            if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
-            var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
-            blockingStub.addRideOffer(offer);
-            channel.shutdown();
+        lock.lock();
+        try {
+            for (var member : getMembers()) {
+                if (member.equals(IP)) continue;
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
+                var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
+                blockingStub.addRideOffer(offer);
+                channel.shutdown();
+            }
+        } catch (Exception e) {
+            lock.unlock();
+            throw e;
         }
-    }
+            lock.unlock();
+        }
 
     public void AddRideToStorage(RideOffer offer) {
         lock.lock();
@@ -160,23 +167,37 @@ public class Logic {
     }
 
     public void BroadcastLockRide(RideOffer offer) throws KeeperException, InterruptedException {
-        for (var member : getMembers()) {
-            if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
-            var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
-            blockingStub.lockRide(offer);
-            channel.shutdown();
+        lock.lock();
+        try {
+            for (var member : getMembers()) {
+                if (member.equals(IP)) continue;
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
+                var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
+                blockingStub.lockRide(offer);
+                channel.shutdown();
+            }
+        } catch (Exception e) {
+            lock.unlock();
+            throw e;
         }
+        lock.unlock();
     }
 
     public void BroadcastCommitRide(CommitRequest req) throws KeeperException, InterruptedException {
-        for (var member : getMembers()) {
-            if (member.equals(IP)) continue;
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
-            var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
-            blockingStub.commitRide(req);
-            channel.shutdown();
+        lock.lock();
+        try {
+            for (var member : getMembers()) {
+                if (member.equals(IP)) continue;
+                ManagedChannel channel = ManagedChannelBuilder.forTarget(member + ":8980").usePlaintext().build();
+                var blockingStub = generated.UberServiceGrpc.newBlockingStub(channel);
+                blockingStub.commitRide(req);
+                channel.shutdown();
+            }
+        } catch (Exception e) {
+            lock.unlock();
+            throw e;
         }
+        lock.unlock();
     }
 
     public boolean CommitRide(CommitRequest req) {

@@ -47,12 +47,15 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
     @Override
     public void lockRide(RideOffer offer, StreamObserver<Result> responseObserver) {
         var logic = logics.get(offer.getRide().getStartingPosition());
-        boolean result = logic.LockRide(offer);
+        boolean locked = logics.get(offer.getRide().getStartingPosition()).IsLocked(offer);
+        boolean result = true;
 
         try {
-            if (result) logic.BroadcastLockRide(offer);
+            if (!locked) {
+                result = logic.LockRide(offer);
+                logic.BroadcastLockRide(offer);
+            }
         } catch (Exception ignored) {}
-
         responseObserver.onNext(Result.newBuilder().setResult(result).build());
         responseObserver.onCompleted();
     }
@@ -60,10 +63,14 @@ public class UberService extends UberServiceGrpc.UberServiceImplBase {
     @Override
     public void commitRide(CommitRequest req, StreamObserver<Result> responseObserver) {
         var logic = logics.get(req.getOffer().getRide().getStartingPosition());
-        boolean result = logic.CommitRide(req);
+        boolean locked = logics.get(req.getOffer().getRide().getStartingPosition()).IsLocked(req.getOffer());
+        boolean result = true;
 
         try {
-            if (result) logic.BroadcastCommitRide(req);
+            if (locked) {
+                result = logic.CommitRide(req);
+                logic.BroadcastCommitRide(req);
+            }
         } catch (Exception ignored) {}
 
         responseObserver.onNext(Result.newBuilder().setResult(result).build());
